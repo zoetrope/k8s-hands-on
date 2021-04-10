@@ -2,6 +2,8 @@ KUBERNETES_VERSION := 1.20.2
 KIND_VERSION := 0.10.0
 KUSTOMIZE_VERSION := 3.8.7
 ARGOCD_VERSION := 2.0.0
+VM_OPERATOR_VERSION := 0.12.2
+GRAFANA_OPERATOR_VERSION := 3.9.0
 
 OS = $(shell go env GOOS)
 ARCH = $(shell go env GOARCH)
@@ -56,13 +58,19 @@ $(KIND): ## Install kind
 	mkdir -p $(BINDIR)
 	$(call go-install-tool,$(KIND),sigs.k8s.io/kind@v$(KIND_VERSION))
 
-.PHONY: update-victoriametrics
-update-victoriametrics:
+.PHONY: update-vm-operator
+update-vm-operator:
 	rm -rf manifests/monitoring/victoriametrics/release
-	$(eval VM_VERSION := $(shell basename $(shell curl -fs -o/dev/null -w %{redirect_url} https://github.com/VictoriaMetrics/operator/releases/latest)))
-	echo $(VM_VERSION)
-	curl -sSLf https://github.com/VictoriaMetrics/operator/releases/download/$(VM_VERSION)/bundle_crd.zip -o /tmp/bundle_crd.zip
+	curl -sSLf https://github.com/VictoriaMetrics/operator/releases/download/v$(VM_OPERATOR_VERSION)/bundle_crd.zip -o /tmp/bundle_crd.zip
 	unzip /tmp/bundle_crd.zip -d manifests/monitoring/victoriametrics/
+
+.PHONY: update-grafana-operator
+update-grafana-operator:
+	rm -rf /tmp/grafana-operator
+	cd /tmp; git clone --depth 1 -b v$(GRAFANA_OPERATOR_VERSION) https://github.com/integr8ly/grafana-operator
+	rm -rf manifests/monitoring/grafana/upstream
+	cp -r /tmp/grafana-operator/deploy manifests/monitoring/grafana/upstream
+	rm -rf /tmp/grafana-operator
 
 .PHONY: help
 help: ## Display this help.

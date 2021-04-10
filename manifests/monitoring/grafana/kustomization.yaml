@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring-system
+resources:
+  - upstream/crds/Grafana.yaml
+  - upstream/crds/GrafanaDashboard.yaml
+  - upstream/crds/GrafanaDataSource.yaml
+  - upstream/roles/role.yaml
+  - upstream/roles/role_binding.yaml
+  - upstream/roles/service_account.yaml
+  - upstream/operator.yaml
