@@ -1,7 +1,8 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAgent
 metadata:
-  name: example-vmagent
+  name: vmagent
+  namespace: monitoring-system
 spec:
   serviceScrapeNamespaceSelector: {}
   serviceScrapeSelector: {}
@@ -22,4 +23,4 @@ spec:
   additionalArgs:
     memory.allowedPercent: "40"
   remoteWrite:
-    - url: "http://vmsingle-example-vmsingle-pvc.default.svc:8429/api/v1/write"
+    - url: "http://vmsingle-vmsingle-pvc.monitoring-system.svc:8429/api/v1/write"
