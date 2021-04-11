@@ -6,6 +6,7 @@ VM_OPERATOR_VERSION := 0.12.2
 GRAFANA_OPERATOR_VERSION := 3.9.0
 KUBE_STATE_METRICS_VERSION := 2.0.0-rc.1
 HELM_VERSION := 3.5.3
+LOGCLI_VERSION := 2.2.1
 
 OS = $(shell go env GOOS)
 ARCH = $(shell go env GOARCH)
@@ -16,6 +17,7 @@ KUSTOMIZE = $(BINDIR)/kustomize
 ARGOCD = $(BINDIR)/argocd
 KIND = $(BINDIR)/kind
 HELM = $(BINDIR)/helm
+LOGCLI = $(BINDIR)/logcli
 
 KIND_CLUSTER_NAME=neco
 
@@ -47,7 +49,7 @@ grafana-password:
 	@$(KUBECTL) get secrets -n grafana grafana-admin-credentials -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d
 
 .PHONY: setup
-setup: $(KUBECTL) $(KUSTOMIZE) $(ARGOCD) $(KIND) $(HELM) ## Setup tools
+setup: $(KUBECTL) $(KUSTOMIZE) $(ARGOCD) $(KIND) $(HELM) $(LOGCLI) ## Setup tools
 
 $(KUBECTL): ## Install kubectl
 	mkdir -p $(BINDIR)
@@ -75,11 +77,19 @@ $(HELM): ## Install helm
 	mv /tmp/helm/$(OS)-$(ARCH)/helm $(HELM)
 	rm -rf /tmp/helm
 
+$(LOGCLI): ## Install logcli
+	mkdir -p $(BINDIR)
+	curl -sSLf https://github.com/grafana/loki/releases/download/v$(LOGCLI_VERSION)/logcli-$(OS)-$(ARCH).zip -o /tmp/logcli.zip
+	unzip /tmp/logcli.zip -d $(BINDIR)
+	mv $(BINDIR)/logcli-$(OS)-$(ARCH) $(LOGCLI)
+	rm -f /tmp/logcli.zip
+
 .PHONY: update-vm-operator
 update-vm-operator:
 	rm -rf manifests/monitoring/victoriametrics/release
 	curl -sSLf https://github.com/VictoriaMetrics/operator/releases/download/v$(VM_OPERATOR_VERSION)/bundle_crd.zip -o /tmp/bundle_crd.zip
 	unzip /tmp/bundle_crd.zip -d manifests/monitoring/victoriametrics/
+	rm -f /tmp/bundle_crd.zip
 
 .PHONY: update-grafana-operator
 update-grafana-operator:
