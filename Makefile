@@ -5,6 +5,7 @@ ARGOCD_VERSION := 2.0.0
 VM_OPERATOR_VERSION := 0.12.2
 GRAFANA_OPERATOR_VERSION := 3.9.0
 KUBE_STATE_METRICS_VERSION := 2.0.0-rc.1
+HELM_VERSION := 3.5.3
 
 OS = $(shell go env GOOS)
 ARCH = $(shell go env GOARCH)
@@ -14,6 +15,7 @@ KUBECTL = $(BINDIR)/kubectl
 KUSTOMIZE = $(BINDIR)/kustomize
 ARGOCD = $(BINDIR)/argocd
 KIND = $(BINDIR)/kind
+HELM = $(BINDIR)/helm
 
 KIND_CLUSTER_NAME=neco
 
@@ -36,10 +38,16 @@ deploy-argocd: $(KUBECTL) ## Deploy argocd on Kubernetes cluster
 	$(KUBECTL) create namespace argocd
 	$(KUBECTL) apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v$(ARGOCD_VERSION)/manifests/install.yaml
 
+.PHONY: argocd-password
+argocd-password:
+	@$(KUBECTL) get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
+.PHONY: grafana-password
+grafana-password:
+	@$(KUBECTL) get secrets -n grafana grafana-admin-credentials -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d
 
 .PHONY: setup
-setup: $(KUBECTL) $(KUSTOMIZE) $(ARGOCD) $(KIND) ## Setup tools
+setup: $(KUBECTL) $(KUSTOMIZE) $(ARGOCD) $(KIND) $(HELM) ## Setup tools
 
 $(KUBECTL): ## Install kubectl
 	mkdir -p $(BINDIR)
@@ -58,6 +66,14 @@ $(ARGOCD): ## Install argocd-cli
 $(KIND): ## Install kind
 	mkdir -p $(BINDIR)
 	$(call go-install-tool,$(KIND),sigs.k8s.io/kind@v$(KIND_VERSION))
+
+$(HELM): ## Install helm
+	mkdir -p $(BINDIR)
+	rm -rf /tmp/helm
+	mkdir -p /tmp/helm
+	curl -sSLf https://get.helm.sh/helm-v$(HELM_VERSION)-$(OS)-$(ARCH).tar.gz | tar -xz -C /tmp/helm
+	mv /tmp/helm/$(OS)-$(ARCH)/helm $(HELM)
+	rm -rf /tmp/helm
 
 .PHONY: update-vm-operator
 update-vm-operator:
@@ -80,6 +96,11 @@ update-kube-state-metrics:
 	rm -f manifests/monitoring/kube-state-metrics/upstream/*
 	cp /tmp/kube-state-metrics/examples/standard/* manifests/monitoring/kube-state-metrics/upstream
 	rm -rf /tmp/kube-state-metrics
+
+.PHONY: update-loki
+update-loki:
+	-@helm repo add grafana https://grafana.github.io/helm-charts
+	helm template --release-name loki --namespace loki grafana/loki-stack > manifests/loki/upstream.yaml
 
 .PHONY: help
 help: ## Display this help.
