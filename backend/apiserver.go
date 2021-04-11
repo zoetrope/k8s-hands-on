@@ -2,23 +2,24 @@ package backend
 
 import (
 	"encoding/json"
-	"github.com/cybozu-go/log"
 	"net/http"
 	"sync"
+
+	"github.com/cybozu-go/log"
 )
 
 func NewAPIServer(allowCORS bool) http.Handler {
 	todos := make([]todo, 0)
 	return &apiServer{
 		allowCORS: allowCORS,
-		todos: todos,
+		todos:     todos,
 	}
 }
 
 type apiServer struct {
 	allowCORS bool
 
-	mu sync.Mutex
+	mu    sync.Mutex
 	todos []todo
 }
 

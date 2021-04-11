@@ -16,5 +16,10 @@ spec:
     spec:
       containers:
         - name: todo
-          image: todo:0.1.0
+          image: todo:v1
+          imagePullPolicy: IfNotPresent
           command: ["/todo"]
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

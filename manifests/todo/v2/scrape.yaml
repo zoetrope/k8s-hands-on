@@ -1,0 +1,14 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: todo
+  namespace: default
+spec:
+  namespaceSelector:
+    matchNames: [default]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: todo
+  podMetricsEndpoints:
+    - port: http
+      scheme: http

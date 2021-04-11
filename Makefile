@@ -36,18 +36,27 @@ shutdown-k8s: $(KIND) ## Shutdown Kubernetes cluster
 	fi
 
 .PHONY: deploy-argocd
-deploy-argocd: $(KUBECTL) ## Deploy argocd on Kubernetes cluster
+deploy-argocd: $(KUBECTL) ## Deploy ArgoCD on Kubernetes cluster
 	$(KUBECTL) create namespace argocd
 	$(KUBECTL) apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v$(ARGOCD_VERSION)/manifests/install.yaml
 
+.PHONY: build-todo-image
+build-todo-image: ## Build todo container image
+	docker build -t todo:v1 .
+
+.PHONY: load-todo-image
+load-todo-image: ## Load todo container image to kind
+	$(KIND) load docker-image --name=$(KIND_CLUSTER_NAME) todo:v1
+
 .PHONY: argocd-password
-argocd-password:
+argocd-password: ## Show admin password for ArgoCD
 	@$(KUBECTL) get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 .PHONY: grafana-password
-grafana-password:
+grafana-password: ## Show admin password for Grafana
 	@$(KUBECTL) get secrets -n grafana grafana-admin-credentials -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d
 
+# Setup Tools
 .PHONY: setup
 setup: $(KUBECTL) $(KUSTOMIZE) $(ARGOCD) $(KIND) $(HELM) $(LOGCLI) ## Setup tools
 
@@ -84,6 +93,7 @@ $(LOGCLI): ## Install logcli
 	mv $(BINDIR)/logcli-$(OS)-$(ARCH) $(LOGCLI)
 	rm -f /tmp/logcli.zip
 
+## Update manifests
 .PHONY: update-vm-operator
 update-vm-operator:
 	rm -rf manifests/monitoring/victoriametrics/release

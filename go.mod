@@ -8,6 +8,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/prometheus/client_golang v0.9.3
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.0

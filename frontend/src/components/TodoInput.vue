@@ -17,10 +17,11 @@ export default {
     addNewTodo(e) {
       e.preventDefault()
       const name = this.newTodo
+      if (name === "") {
+        return
+      }
       console.log("new todo: " + name)
-
       this.$emit("eventAddNewTodo", name)
-
       this.newTodo = ""
     }
   }
