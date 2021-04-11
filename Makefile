@@ -4,6 +4,7 @@ KUSTOMIZE_VERSION := 3.8.7
 ARGOCD_VERSION := 2.0.0
 VM_OPERATOR_VERSION := 0.12.2
 GRAFANA_OPERATOR_VERSION := 3.9.0
+KUBE_STATE_METRICS_VERSION := 2.0.0-rc.1
 
 OS = $(shell go env GOOS)
 ARCH = $(shell go env GOARCH)
@@ -71,6 +72,14 @@ update-grafana-operator:
 	rm -rf manifests/monitoring/grafana/upstream
 	cp -r /tmp/grafana-operator/deploy manifests/monitoring/grafana/upstream
 	rm -rf /tmp/grafana-operator
+
+.PHONY: update-kube-state-metrics
+update-kube-state-metrics:
+	rm -rf /tmp/kube-state-metrics
+	cd /tmp; git clone --depth 1 -b v$(KUBE_STATE_METRICS_VERSION) https://github.com/kubernetes/kube-state-metrics
+	rm -f manifests/monitoring/kube-state-metrics/upstream/*
+	cp /tmp/kube-state-metrics/examples/standard/* manifests/monitoring/kube-state-metrics/upstream
+	rm -rf /tmp/kube-state-metrics
 
 .PHONY: help
 help: ## Display this help.
