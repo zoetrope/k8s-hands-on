@@ -11,3 +11,4 @@ resources:
   - upstream/roles/service_account.yaml
   - upstream/operator.yaml
   - Grafana.yaml
+  - DataSource.yaml

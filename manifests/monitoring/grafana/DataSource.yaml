@@ -1,0 +1,17 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: example-grafanadatasource
+spec:
+  name: middleware.yaml
+  datasources:
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://vmsingle-vmsingle-pvc.monitoring-system:8429
+      isDefault: true
+      version: 1
+      editable: true
+      jsonData:
+        tlsSkipVerify: true
+        timeInterval: "5s"
