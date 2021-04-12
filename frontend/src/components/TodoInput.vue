@@ -1,7 +1,12 @@
 <template>
-  <v-form ref="form">
-    <v-text-field label="What needs to be done?" v-model="newTodo" required></v-text-field>
-    <v-btn @click="addNewTodo">Add</v-btn>
+  <v-form ref="form" @submit.prevent>
+    <v-text-field
+        label="what needs to be done?"
+        v-model="newTodo"
+        @keyup.enter="addNewTodo"
+        autofocus
+        required
+    ></v-text-field>
   </v-form>
 </template>
 

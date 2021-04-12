@@ -8,7 +8,7 @@
     <v-main>
       <v-container>
         <TodoInput @eventAddNewTodo="addNewTodo"/>
-        <TodoList :todos="todos"/>
+        <TodoList @eventUpdateTodo="updateTodo" @eventRemoveTodo="removeTodo" :todos="todos"/>
       </v-container>
     </v-main>
   </v-app>
@@ -51,6 +51,23 @@ export default {
       })
           .then(() => {
             this.todos.push({name: name})
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+    },
+    updateTodo(item) {
+      axios.put(apiEndpoint + '/todo/' + item.id, item)
+          .then(() => {
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+    },
+    removeTodo(item) {
+      axios.delete(apiEndpoint + '/todo/' + item.id)
+          .then(() => {
+            this.todos = this.todos.filter(n => n.id !== item.id);
           })
           .catch((e) => {
             console.log(e)

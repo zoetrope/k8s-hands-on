@@ -3,6 +3,8 @@ package backend
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/cybozu-go/log"
@@ -21,6 +23,7 @@ type apiServer struct {
 
 	mu    sync.Mutex
 	todos []todo
+	count int
 }
 
 func (s *apiServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -39,13 +42,19 @@ func (s *apiServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.listTodos(w, r)
 	case r.Method == http.MethodPost && p == "todo":
 		s.addTodo(w, r)
+	case r.Method == http.MethodPut && strings.HasPrefix(p, "todo/"):
+		s.updateTodo(w, r)
+	case r.Method == http.MethodDelete && strings.HasPrefix(p, "todo/"):
+		s.removeTodo(w, r)
 	default:
 		http.Error(w, "requested resource is not found", http.StatusNotFound)
 	}
 }
 
 type todo struct {
+	ID   int    `json:"id"`
 	Name string `json:"name"`
+	Done bool   `json:"done"`
 }
 
 func (s *apiServer) listTodos(w http.ResponseWriter, r *http.Request) {
@@ -72,6 +81,55 @@ func (s *apiServer) addTodo(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	todo.ID = s.count
+	s.count++
 	log.Info("add todo: ", map[string]interface{}{"todo": todo})
 	s.todos = append(s.todos, todo)
+}
+
+func (s *apiServer) updateTodo(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	id, err := strconv.Atoi(r.URL.Path[len("/api/v1/todo/"):])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var todo todo
+	err = json.NewDecoder(r.Body).Decode(&todo)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	for i, t := range s.todos {
+		if t.ID == id {
+			log.Info("update todo: ", map[string]interface{}{"todo": todo})
+			s.todos[i].Name = todo.Name
+			s.todos[i].Done = todo.Done
+			return
+		}
+	}
+	http.Error(w, "id not found", http.StatusNotFound)
+}
+
+func (s *apiServer) removeTodo(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	id, err := strconv.Atoi(r.URL.Path[len("/api/v1/todo/"):])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	for i, t := range s.todos {
+		if t.ID == id {
+			s.todos = append(s.todos[:i], s.todos[i+1:]...)
+			log.Info("remove todo: ", map[string]interface{}{"id": id})
+			return
+		}
+	}
+	http.Error(w, "id not found", http.StatusNotFound)
 }
