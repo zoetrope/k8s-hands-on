@@ -9,8 +9,7 @@ RUN go mod download
 COPY cmd/ cmd/
 COPY server/ server/
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o todo ./cmd/main.go
-
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o todo ./cmd/main.go
 
 FROM node:14 AS build-ui
 
@@ -23,7 +22,6 @@ RUN cd ui && npm install
 
 COPY ui/ ui/
 RUN cd ui && npm run build
-
 
 FROM quay.io/cybozu/ubuntu:20.04 AS runtime
 
