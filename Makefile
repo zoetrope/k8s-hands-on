@@ -42,7 +42,7 @@ deploy-argocd: $(KUBECTL) ## Deploy ArgoCD on Kubernetes cluster
 
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image
-	docker build -t todo:v1 .
+	docker build -t todo:v1 ./todo
 
 .PHONY: load-todo-image
 load-todo-image: ## Load todo container image to kind

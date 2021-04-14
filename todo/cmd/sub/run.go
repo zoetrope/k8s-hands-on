@@ -8,7 +8,7 @@ import (
 
 	"github.com/cybozu-go/well"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/zoetrope/neco-hands-on/backend"
+	"github.com/zoetrope/neco-hands-on/todo/server"
 )
 
 func subMain() error {
