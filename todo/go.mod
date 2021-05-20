@@ -1,4 +1,4 @@
-module github.com/zoetrope/neco-hands-on/todo
+module github.com/zoetrope/k8s-hands-on/todo
 
 go 1.15
 

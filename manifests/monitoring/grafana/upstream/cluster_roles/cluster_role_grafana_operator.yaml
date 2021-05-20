@@ -13,6 +13,7 @@ rules:
       - ""
     resources:
       - namespaces
+      - configmaps
     verbs: ['get', 'list', 'watch']
   - apiGroups:
       - ""

@@ -1,4 +1,4 @@
-# neco-hands-on
+# k8s-hands-on
 
 ## ディレクトリ構造
 
@@ -13,11 +13,27 @@
 
 ## 利用方法
 
+### ツールのセットアップ
+
+```console
+make setup
+```
+
+`bin`ディレクトリにツールがダウンロードされるので、必要に応じてPATHを通してください。
+
+```console
+PATH=$(pwd)/bin:$PATH
+```
+
 ### Kubernetesクラスタの立ち上げ
+
+kindでKubernetesクラスタを起動します。
 
 ```console
 make launch-k8s
 ```
+
+PodがすべてReadyになるまで待ちます。
 
 ```console
 watch kubectl get pod -n kube-system
@@ -25,13 +41,19 @@ watch kubectl get pod -n kube-system
 
 ### ArgoCDのセットアップ
 
+ArgoCDをデプロイします。
+
 ```console
 make deploy-argocd
 ```
 
+PodがすべてReadyになるまで待ちます。
+
 ```console
-kubectl get pod -n argocd
+watch kubectl get pod -n argocd
 ```
+
+ArgoCDの設定を適用します。
 
 ```console
 kubectl -n argocd apply -f manifests/argocd-config/argocd-config.yaml

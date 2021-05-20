@@ -1,11 +1,11 @@
-KUBERNETES_VERSION := 1.20.2
-KIND_VERSION := 0.10.0
-KUSTOMIZE_VERSION := 3.8.7
-ARGOCD_VERSION := 2.0.0
-VM_OPERATOR_VERSION := 0.12.2
-GRAFANA_OPERATOR_VERSION := 3.9.0
+KUBERNETES_VERSION := 1.21.1
+KIND_VERSION := 0.11.0
+KUSTOMIZE_VERSION := 4.1.2
+ARGOCD_VERSION := 2.0.1
+VM_OPERATOR_VERSION := 0.14.2
+GRAFANA_OPERATOR_VERSION := 3.10.1
 KUBE_STATE_METRICS_VERSION := 2.0.0
-HELM_VERSION := 3.5.3
+HELM_VERSION := 3.5.4
 LOGCLI_VERSION := 2.2.1
 
 OS = $(shell go env GOOS)
@@ -19,7 +19,7 @@ KIND = $(BINDIR)/kind
 HELM = $(BINDIR)/helm
 LOGCLI = $(BINDIR)/logcli
 
-KIND_CLUSTER_NAME=neco
+KIND_CLUSTER_NAME=hands-on
 
 all: help
 
@@ -126,6 +126,18 @@ update-loki:
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
+.PHONY: check-latest-update
+check-latest-update:
+#	$(call get-latest-gh,kubernetes-sigs/kind)
+#	@echo kubernetes-sigs/kustomize: $(shell curl -sL "https://api.github.com/repos/kubernetes-sigs/kustomize/releases" | jq --raw-output "map(select(any(.assets[].name; contains(\"kustomize\"))))[0].tag_name" | sed 's/.*\///')
+#	$(call get-latest-gh,argoproj/argo-cd)
+#	$(call get-latest-gh,VictoriaMetrics/operator)
+	$(call get-latest-gh,integr8ly/grafana-operator)
+	#$(call get-latest-gh2,kubernetes/kube-state-metrics,v)
+	$(call get-latest-gh,helm/helm)
+	$(call get-latest-gh,grafana/loki)
+
+
 .PHONY: clean
 clean: ## Clean tools
 	rm -rf $(BINDIR)
@@ -140,4 +152,13 @@ echo "Downloading $(2)" ;\
 GOBIN=$(BINDIR) go install $(2) ;\
 rm -rf $$TMP_DIR ;\
 }
+endef
+
+# usage get-latest-gh OWNER/REPO
+define get-latest-gh
+@echo $1: $(shell curl -sfL https://api.github.com/repos/$1/releases/latest | jq -r '.tag_name')
+endef
+
+define get-latest-gh2
+@echo $1: $(shell curl -sfL "https://api.github.com/repos/$1/releases" | jq -r "map(select(any(.assets[].name; contains(\"$2\"))))[0].tag_name" | sed 's/.*\///')
 endef

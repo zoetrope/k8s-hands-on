@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zoetrope/neco-hands-on.git
+    repoURL: https://github.com/zoetrope/k8s-hands-on.git
     targetRevision: main
     path: manifests/loki
   destination:
