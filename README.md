@@ -61,38 +61,43 @@ kubectl -n argocd apply -f manifests/argocd-config/argocd-config.yaml
 
 ### ArgoCDの利用
 
+ブラウザからArgoCDに接続できるようにPort Forwardします。
+
 ```console
 kubectl -n argocd port-forward svc/argocd-server 8080:80
 ```
+
+ブラウザを開いて http://localhost:8080 にアクセスしてください。
+
+下記のコマンドでパスワードを確認し、Username: admin でログインします。
 
 ```console
 make argocd-password
 ```
 
-```console
-argocd login localhost:8080
-```
+ブラウザの画面から、argocd-configのSYNCをおこないます。
+SYNCに成功すると、デプロイ可能なアプリケーションがいくつか表示されます。
 
-```console
-./bin/argocd app sync argocd-config
-```
+続いて必要なアプリケーションのSYNCをおこないます。
+
+- monitoring: モニタリングシステム
+- loki: ログ収集システム
+- todo: サンプルのWebアプリケーション
+  
+しばらく待ってStatusがHealthy/Syncedの状態になれば、デプロイ成功です。
 
 ### Grafanaの利用
+
+ブラウザからGrafanaに接続できるようにPort Forwardします。
 
 ```console
 kubectl -n grafana port-forward svc/grafana-service 3000:3000
 ```
 
+ブラウザを開いて http://localhost:3000 にアクセスしてください。
+
+下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
+
 ```console
 make grafana-password
-```
-
-### logcliの利用
-
-```console
-kubectl -n loki port-forward svc/loki 3100:3100
-```
-
-```console
-logcli query '{namespace="kube-system"}'
 ```

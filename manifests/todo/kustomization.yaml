@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: argocd
+namespace: default
 resources:
-  - monitoring.yaml
-  - loki.yaml
-  - todo.yaml
+  - deployment.yaml
+  - service.yaml
+  - scrape.yaml

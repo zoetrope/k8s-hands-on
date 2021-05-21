@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: request
+  labels:
+    app.kubernetes.io/name: request
+spec:
+  containers:
+    - name: request
+      image: quay.io/cybozu/ubuntu-debug:20.04
+      command: [ "/bin/bash" ]
+      args: ["-c", "while true; do curl -s http://todo.default.svc.cluster.local/test; sleep 1; done"]

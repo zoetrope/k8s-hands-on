@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: todo
-          image: todo:v1
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/zoetrope/todo:latest
+          imagePullPolicy: Always
           command: ["/todo"]
           ports:
             - name: http
