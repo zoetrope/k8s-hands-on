@@ -3,7 +3,6 @@ kind: VMSingle
 metadata:
   name: vmsingle-pvc
 spec:
-  # Add fields here
   retentionPeriod: "1"
   removePvcAfterDelete: true
   storage:
