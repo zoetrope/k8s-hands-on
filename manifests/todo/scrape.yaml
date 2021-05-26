@@ -12,3 +12,4 @@ spec:
   podMetricsEndpoints:
     - port: http
       scheme: http
+      path: /metrics

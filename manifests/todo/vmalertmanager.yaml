@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: vmalertmanager-alertmanager
-  namespace: monitoring-system
+  name: alertmanager-setting
+  namespace: default
   labels:
     app: vm-operator
 type: Opaque
@@ -30,4 +30,4 @@ metadata:
   namespace: monitoring-system
 spec:
   replicaCount: 1
-  configSecret: vmalertmanager-alertmanager
+  configSecret: alertmanager-setting

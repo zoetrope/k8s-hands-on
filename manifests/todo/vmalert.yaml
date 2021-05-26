@@ -2,11 +2,11 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlert
 metadata:
   name: vmalert
-  namespace: monitoring-system
+  namespace: default
 spec:
   replicaCount: 1
   datasource:
-    url: "http://vmsingle-vmsingle-pvc.monitoring-system.svc:8429"
+    url: "http://vmsingle-database.monitoring-system.svc:8429"
   notifier:
     url: "http://vmalertmanager-alertmanager.monitoring-system.svc:9093"
   evaluationInterval: "30s"

@@ -6,3 +6,7 @@ resources:
   - service.yaml
   - scrape.yaml
   - request.yaml
+  - vmagent.yaml
+  - vmalert.yaml
+  - vmalertmanager.yaml
+  - vmrule.yaml
