@@ -1,0 +1,16 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vmagent
+  namespace: monitoring-system
+spec:
+  serviceScrapeNamespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: monitoring-system
+  podScrapeNamespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: monitoring-system
+  replicaCount: 1
+  remoteWrite:
+    - url: "http://vmsingle-database.monitoring-system.svc:8429/api/v1/write"
+  scrapeInterval: 30s

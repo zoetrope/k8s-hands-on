@@ -1,7 +1,7 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAgent
 metadata:
-  name: vmagent
+  name: todo-agent
   namespace: default
 spec:
   replicaCount: 1
