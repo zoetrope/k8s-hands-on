@@ -4,5 +4,3 @@ namespace: argocd
 resources:
   - namespace.yaml
   - upstream.yaml
-patchesStrategicMerge:
-  - patch.yaml

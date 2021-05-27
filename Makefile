@@ -7,7 +7,6 @@ GRAFANA_OPERATOR_VERSION := 3.10.1
 KUBE_STATE_METRICS_VERSION := 2.0.0
 HELM_VERSION := 3.5.4
 LOGCLI_VERSION := 2.2.1
-CONTOUR_VERSION := 1.15
 
 OS = $(shell go env GOOS)
 ARCH = $(shell go env GOARCH)
@@ -42,6 +41,21 @@ deploy-argocd: $(KUBECTL) ## Deploy ArgoCD on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/argocd | $(KUBECTL) apply -f -
 	$(KUBECTL) wait pod --all -n argocd --for condition=Ready --timeout 180s
 	$(KUBECTL) -n argocd apply -f manifests/argocd-config/argocd-config.yaml
+
+.PHONY: deploy-monitoring
+deploy-monitoring: $(KUBECTL) ## Deploy monitoring system on Kubernetes cluster
+	$(KUSTOMIZE) build ./manifests/monitoring | $(KUBECTL) apply -f -
+	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
+
+.PHONY: deploy-loki
+deploy-loki: $(KUBECTL) ## Deploy loki on Kubernetes cluster
+	$(KUSTOMIZE) build ./manifests/loki | $(KUBECTL) apply -f -
+	$(KUBECTL) wait pod --all -n loki --for condition=Ready --timeout 180s
+
+.PHONY: deploy-todo
+deploy-todo: $(KUBECTL) ## Deploy sample application on Kubernetes cluster
+	$(KUSTOMIZE) build ./manifests/todo | $(KUBECTL) apply -f -
+	$(KUBECTL) wait pod --all -n todo --for condition=Ready --timeout 180s
 
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image
@@ -129,11 +143,6 @@ update-kube-state-metrics:
 update-loki:
 	-@helm repo add grafana https://grafana.github.io/helm-charts
 	helm template --release-name loki --namespace loki grafana/loki-stack > manifests/loki/upstream.yaml
-
-.PHONY: update-contour
-update-contour:
-	rm -rf manifests/contour/upstream.yaml
-	curl -sSLf https://raw.githubusercontent.com/projectcontour/contour/release-$(CONTOUR_VERSION)/examples/render/contour.yaml -o manifests/contour/upstream.yaml
 
 .PHONY: help
 help: ## Display this help.

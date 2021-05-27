@@ -39,6 +39,46 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n kube-system
 ```
 
+## モニタリング(VictoriaMetrics)について学ぶ
+
+### モニタリングシステムのセットアップ
+
+VictoriaMetrics, Grafana, kube-state-metricsをデプロイします。
+
+```console
+make deploy-monitoring
+```
+
+PodがすべてReadyになるまで待ちます。
+
+```console
+watch kubectl get pod -n monitoring-system
+```
+
+モニタリング対象のサンプルアプリケーションをデプロイします。
+
+```console
+make deploy-todo
+```
+
+### Grafanaの利用
+
+ブラウザからGrafanaに接続できるようにPort Forwardします。
+
+```console
+kubectl -n grafana port-forward svc/grafana-service 3000:3000
+```
+
+ブラウザを開いて http://localhost:3000 にアクセスしてください。
+
+下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
+
+```console
+make grafana-password
+```
+
+## 継続的デリバリー(ArgoCD)について学ぶ
+
 ### ArgoCDのセットアップ
 
 ArgoCDをデプロイします。
@@ -55,7 +95,13 @@ watch kubectl get pod -n argocd
 
 ### ArgoCDの利用
 
-ブラウザを開いて http://localhost/argocd にアクセスしてください。
+ブラウザからArgoCDに接続できるようにPort Forwardします。
+
+```console
+kubectl -n argocd port-forward svc/argocd-server 8080:80
+```
+
+ブラウザを開いて http://localhost:8080 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Username: admin でログインします。
 
@@ -68,19 +114,8 @@ SYNCに成功すると、デプロイ可能なアプリケーションがいく�
 
 続いて必要なアプリケーションのSYNCをおこないます。
 
-- contour: L7ロードバランサー
 - monitoring: モニタリングシステム
 - loki: ログ収集システム
 - todo: サンプルのWebアプリケーション
   
 しばらく待ってStatusがHealthy/Syncedの状態になれば、デプロイ成功です。
-
-### Grafanaの利用
-
-ブラウザを開いて http://localhost/grafana にアクセスしてください。
-
-下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
-
-```console
-make grafana-password
-```
