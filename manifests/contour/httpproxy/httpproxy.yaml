@@ -1,0 +1,21 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: localhost
+  namespace: projectcontour
+spec:
+  virtualhost:
+    fqdn: localhost
+  includes:
+    - name: argocd
+      namespace: argocd
+      conditions:
+        - prefix: /argocd
+    - name: grafana
+      namespace: grafana
+      conditions:
+        - prefix: /grafana
+    - name: todo
+      namespace: todo
+      conditions:
+        - prefix: /todo

@@ -10,3 +10,5 @@ resources:
   - rules/argocd.yaml
   - rules/kube-state-metrics.yaml
   - rules/kubernetes.yaml
+patchesStrategicMerge:
+  - namespace.yaml

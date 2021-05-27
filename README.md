@@ -53,21 +53,9 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n argocd
 ```
 
-ArgoCDの設定を適用します。
-
-```console
-kubectl -n argocd apply -f manifests/argocd-config/argocd-config.yaml
-```
-
 ### ArgoCDの利用
 
-ブラウザからArgoCDに接続できるようにPort Forwardします。
-
-```console
-kubectl -n argocd port-forward svc/argocd-server 8080:80
-```
-
-ブラウザを開いて http://localhost:8080 にアクセスしてください。
+ブラウザを開いて http://localhost/argocd にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Username: admin でログインします。
 
@@ -80,6 +68,7 @@ SYNCに成功すると、デプロイ可能なアプリケーションがいく�
 
 続いて必要なアプリケーションのSYNCをおこないます。
 
+- contour: L7ロードバランサー
 - monitoring: モニタリングシステム
 - loki: ログ収集システム
 - todo: サンプルのWebアプリケーション
@@ -88,13 +77,7 @@ SYNCに成功すると、デプロイ可能なアプリケーションがいく�
 
 ### Grafanaの利用
 
-ブラウザからGrafanaに接続できるようにPort Forwardします。
-
-```console
-kubectl -n grafana port-forward svc/grafana-service 3000:3000
-```
-
-ブラウザを開いて http://localhost:3000 にアクセスしてください。
+ブラウザを開いて http://localhost/grafana にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
 

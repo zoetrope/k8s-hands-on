@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: loki
+  name: todo
   labels:
-    team: admin
+    team: user

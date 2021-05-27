@@ -15,6 +15,9 @@ spec:
       disable_signout_menu: True
     auth.anonymous:
       enabled: True
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
+      serve_from_sub_path: True
   service:
     name: "grafana-service"
     labels:
