@@ -39,7 +39,7 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n kube-system
 ```
 
-## モニタリング(VictoriaMetrics)について学ぶ
+## モニタリング(VictoriaMetrics, Grafana, kube-state-metrics)
 
 ### モニタリングシステムのセットアップ
 
@@ -66,7 +66,7 @@ make deploy-todo
 ブラウザからGrafanaに接続できるようにPort Forwardします。
 
 ```console
-kubectl -n grafana port-forward svc/grafana-service 3000:3000
+make port-forward-grafana
 ```
 
 ブラウザを開いて http://localhost:3000 にアクセスしてください。
@@ -77,7 +77,7 @@ kubectl -n grafana port-forward svc/grafana-service 3000:3000
 make grafana-password
 ```
 
-## 継続的デリバリー(ArgoCD)について学ぶ
+## 継続的デリバリー(ArgoCD)
 
 ### ArgoCDのセットアップ
 
@@ -98,7 +98,7 @@ watch kubectl get pod -n argocd
 ブラウザからArgoCDに接続できるようにPort Forwardします。
 
 ```console
-kubectl -n argocd port-forward svc/argocd-server 8080:80
+make port-forward-argocd
 ```
 
 ブラウザを開いて http://localhost:8080 にアクセスしてください。
@@ -119,3 +119,20 @@ SYNCに成功すると、デプロイ可能なアプリケーションがいく�
 - todo: サンプルのWebアプリケーション
   
 しばらく待ってStatusがHealthy/Syncedの状態になれば、デプロイ成功です。
+
+## ロギング(loki)
+
+### ロギングシステムのセットアップ
+
+Loki, Grafanaをデプロイします。
+
+```console
+make deploy-loki
+```
+
+PodがすべてReadyになるまで待ちます。
+
+```console
+watch kubectl get pod -n loki
+```
+

@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: todo
+  name: kube-state-metrics
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/zoetrope/k8s-hands-on.git
     targetRevision: main
-    path: manifests/todo
+    path: manifests/kube-state-metrics
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: kube-system
   syncPolicy:
     automated: {}

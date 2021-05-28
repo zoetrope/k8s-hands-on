@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: todo
+  name: victoriametrics
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/zoetrope/k8s-hands-on.git
     targetRevision: main
-    path: manifests/todo
+    path: manifests/victoriametrics
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: monitoring-system
   syncPolicy:
     automated: {}

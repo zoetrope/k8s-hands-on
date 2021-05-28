@@ -2,17 +2,15 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
   name: vmrule
-  namespace: monitoring-system
+  namespace: todo
 spec:
   groups:
-    - name: HighErrorRate
+    - name: todo
       rules:
-        - alert: todo error rate is high
+        - alert: TodoErrorsHigh
           expr: sum(rate(todo_api_requests_total{code="500"}[5m]))/sum(rate(todo_api_requests_total[5m])) > 0.3
           for: 60s
           labels:
-            severity: critical
-            job:  "{{ $labels.job }}"
+            severity: error
           annotations:
-            value: "{{ $value }}"
-            description: 'todo error rate is high'
+            summary: "Todo is returning errors for {{ $value }}% of requests"

@@ -5,10 +5,5 @@ resources:
   - release/crds/crd.yaml
   - release/operator/manager.yaml
   - release/operator/rbac.yaml
-  - vmagent.yaml
-  - vmsingle.yaml
-  - rules/argocd.yaml
-  - rules/kube-state-metrics.yaml
-  - rules/kubernetes.yaml
 patchesStrategicMerge:
   - namespace.yaml

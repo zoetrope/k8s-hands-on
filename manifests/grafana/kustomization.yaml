@@ -10,5 +10,3 @@ resources:
   - upstream/roles/role_binding.yaml
   - upstream/roles/service_account.yaml
   - upstream/operator.yaml
-  - Grafana.yaml
-  - DataSource.yaml
