@@ -52,6 +52,11 @@ deploy-kube-state-metrics: $(KUBECTL) $(KUSTOMIZE) ## Deploy kube-state-metrics 
 	$(KUSTOMIZE) build ./manifests/kube-state-metrics | $(KUBECTL) apply -f -
 	$(KUBECTL) wait pod --all -n kube-system --for condition=Ready --timeout 180s
 
+.PHONY: deploy-node-exporter
+deploy-node-exporter: $(KUBECTL) $(KUSTOMIZE) ## Deploy node-exporter on Kubernetes cluster
+	$(KUSTOMIZE) build ./manifests/node-exporter | $(KUBECTL) apply -f -
+	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
+
 .PHONY: deploy-victoriametrics
 deploy-victoriametrics: $(KUBECTL) $(KUSTOMIZE) ## Deploy Victoria Metrics on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/victoriametrics | $(KUBECTL) apply -f -
@@ -62,6 +67,7 @@ deploy-monitoring: $(KUBECTL) $(KUSTOMIZE) ## Deploy monitoring system on Kubern
 	make deploy-grafana
 	make deploy-kube-state-metrics
 	make deploy-victoriametrics
+	make deploy-node-exporter
 	$(KUSTOMIZE) build ./manifests/monitoring | $(KUBECTL) apply -f -
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
 
@@ -164,25 +170,25 @@ update-argocd:
 ## Update manifests
 .PHONY: update-vm-operator
 update-vm-operator:
-	rm -rf manifests/monitoring/victoriametrics/release
+	rm -rf manifests/victoriametrics/release
 	curl -sSLf https://github.com/VictoriaMetrics/operator/releases/download/v$(VM_OPERATOR_VERSION)/bundle_crd.zip -o /tmp/bundle_crd.zip
-	unzip /tmp/bundle_crd.zip -d manifests/monitoring/victoriametrics/
+	unzip /tmp/bundle_crd.zip -d manifests/victoriametrics/
 	rm -f /tmp/bundle_crd.zip
 
 .PHONY: update-grafana-operator
 update-grafana-operator:
 	rm -rf /tmp/grafana-operator
 	cd /tmp; git clone --depth 1 -b v$(GRAFANA_OPERATOR_VERSION) https://github.com/integr8ly/grafana-operator
-	rm -rf manifests/monitoring/grafana/upstream
-	cp -r /tmp/grafana-operator/deploy manifests/monitoring/grafana/upstream
+	rm -rf manifests/grafana/upstream
+	cp -r /tmp/grafana-operator/deploy manifests/grafana/upstream
 	rm -rf /tmp/grafana-operator
 
 .PHONY: update-kube-state-metrics
 update-kube-state-metrics:
 	rm -rf /tmp/kube-state-metrics
 	cd /tmp; git clone --depth 1 -b v$(KUBE_STATE_METRICS_VERSION) https://github.com/kubernetes/kube-state-metrics
-	rm -f manifests/monitoring/kube-state-metrics/upstream/*
-	cp /tmp/kube-state-metrics/examples/standard/* manifests/monitoring/kube-state-metrics/upstream
+	rm -f manifests/kube-state-metrics/upstream/*
+	cp /tmp/kube-state-metrics/examples/standard/* manifests/kube-state-metrics/upstream
 	rm -rf /tmp/kube-state-metrics
 
 .PHONY: update-loki

@@ -6,5 +6,6 @@ resources:
   - rules/argocd.yaml
   - rules/kube-state-metrics.yaml
   - rules/kubernetes.yaml
+  - rules/node-exporter.yaml
   - grafana.yaml
   - datasource.yaml
