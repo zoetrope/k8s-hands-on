@@ -85,6 +85,15 @@ func (s *apiServer) addTodo(w http.ResponseWriter, r *http.Request) {
 	s.count++
 	log.Info("add todo: ", map[string]interface{}{"todo": todo})
 	s.todos = append(s.todos, todo)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(todo)
+	if err != nil {
+		log.Error("failed to output JSON", map[string]interface{}{
+			log.FnError: err.Error(),
+		})
+	}
 }
 
 func (s *apiServer) updateTodo(w http.ResponseWriter, r *http.Request) {

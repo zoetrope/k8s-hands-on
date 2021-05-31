@@ -49,8 +49,8 @@ export default {
       axios.post(apiEndpoint + '/todo', {
         name: name,
       })
-          .then(() => {
-            this.todos.push({name: name})
+          .then(response => {
+            this.todos.push({name: name, id: response.data.id})
           })
           .catch((e) => {
             console.log(e)
