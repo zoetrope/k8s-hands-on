@@ -39,27 +39,32 @@ shutdown-k8s: $(KIND) ## Shutdown Kubernetes cluster
 .PHONY: deploy-argocd
 deploy-argocd: $(KUBECTL) $(KUSTOMIZE) ## Deploy ArgoCD on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/argocd | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n argocd --for condition=Ready --timeout 180s
 	$(KUBECTL) -n argocd apply -f manifests/argocd-config/argocd-config.yaml
 
 .PHONY: deploy-grafana
 deploy-grafana: $(KUBECTL) $(KUSTOMIZE) ## Deploy Grafana on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/grafana | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n grafana --for condition=Ready --timeout 180s
 
 .PHONY: deploy-kube-state-metrics
 deploy-kube-state-metrics: $(KUBECTL) $(KUSTOMIZE) ## Deploy kube-state-metrics on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/kube-state-metrics | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n kube-system --for condition=Ready --timeout 180s
 
 .PHONY: deploy-node-exporter
 deploy-node-exporter: $(KUBECTL) $(KUSTOMIZE) ## Deploy node-exporter on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/node-exporter | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
 
 .PHONY: deploy-victoriametrics
 deploy-victoriametrics: $(KUBECTL) $(KUSTOMIZE) ## Deploy Victoria Metrics on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/victoriametrics | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
 
 .PHONY: deploy-monitoring
@@ -69,17 +74,20 @@ deploy-monitoring: $(KUBECTL) $(KUSTOMIZE) ## Deploy monitoring system on Kubern
 	make deploy-victoriametrics
 	make deploy-node-exporter
 	$(KUSTOMIZE) build ./manifests/monitoring | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
 
 .PHONY: deploy-loki
 deploy-loki: $(KUBECTL) $(KUSTOMIZE) ## Deploy loki on Kubernetes cluster
 	make deploy-grafana
 	$(KUSTOMIZE) build ./manifests/loki | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n loki --for condition=Ready --timeout 180s
 
 .PHONY: deploy-todo
 deploy-todo: $(KUBECTL) $(KUSTOMIZE) ## Deploy sample application on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/todo | $(KUBECTL) apply -f -
+	sleep 5
 	$(KUBECTL) wait pod --all -n todo --for condition=Ready --timeout 180s
 
 .PHONY: build-todo-image
@@ -100,7 +108,7 @@ grafana-password: ## Show admin password for Grafana
 
 .PHONY: port-forward-argocd
 port-forward-argocd: $(KUBECTL)
-	@$(KUBECTL) port-forward -n argocd service/argocd-server 8080:80 > /dev/null 2>&1 & jobs -p > ./bin/argocd.pid
+	$(KUBECTL) port-forward -n argocd service/argocd-server 8080:80 > /dev/null 2>&1 & jobs -p > ./bin/argocd.pid
 
 .PHONY: stop-port-forward-argocd
 stop-port-forward-argocd:
@@ -109,7 +117,7 @@ stop-port-forward-argocd:
 
 .PHONY: port-forward-grafana
 port-forward-grafana: $(KUBECTL)
-	@$(KUBECTL) port-forward -n grafana service/grafana-service 3000:3000 > /dev/null 2>&1 & jobs -p > ./bin/grafana.pid
+	$(KUBECTL) port-forward -n grafana service/grafana-service 3000:3000 > /dev/null 2>&1 & jobs -p > ./bin/grafana.pid
 
 .PHONY: stop-port-forward-grafana
 stop-port-forward-grafana:
@@ -118,7 +126,7 @@ stop-port-forward-grafana:
 
 .PHONY: port-forward-todo
 port-forward-todo: $(KUBECTL)
-	@$(KUBECTL) port-forward -n todo service/todo 9999:80 > /dev/null 2>&1 & jobs -p > ./bin/todo.pid
+	$(KUBECTL) port-forward -n todo service/todo 9999:80 > /dev/null 2>&1 & jobs -p > ./bin/todo.pid
 
 .PHONY: stop-port-forward-todo
 stop-port-forward-todo:

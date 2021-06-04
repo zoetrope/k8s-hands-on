@@ -7,9 +7,15 @@
 
 ## 事前準備
 
+このハンズオンはLinux, WSL2(Ubuntu), macOS(Intel Chip)で動作します。
+事前に下記のソフトウェアをインストールしておいてください。
+
 - Goのインストール
+    - https://golang.org/dl/
 - Dockerのインストール
+    - https://docs.docker.com/get-docker/
 - make, curl, unzipなどのコマンドのインストール
+    - macOSの場合は、Command Line Tools for Xcodeのインストールが必要です。
 
 ## 利用方法
 
