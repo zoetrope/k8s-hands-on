@@ -45,6 +45,14 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n kube-system
 ```
 
+### Kubernetesクラスタの終了
+
+ハンズオンを終えたいときや環境を最初から作り直したいときはKubernetesクラスタを削除できます。
+
+```console
+make shutdown-k8s
+```
+
 ## モニタリング(VictoriaMetrics, Grafana, kube-state-metrics)
 
 ### モニタリングシステムのセットアップ
@@ -141,4 +149,3 @@ PodがすべてReadyになるまで待ちます。
 ```console
 watch kubectl get pod -n loki
 ```
-
