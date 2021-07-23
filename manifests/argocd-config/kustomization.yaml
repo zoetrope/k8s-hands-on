@@ -8,5 +8,6 @@ resources:
   - loki.yaml
   - monitoring.yaml
   - node-exporter.yaml
+  - prometheus-adapter.yaml
   - todo.yaml
   - victoriametrics.yaml

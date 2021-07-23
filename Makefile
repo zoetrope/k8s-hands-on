@@ -61,6 +61,12 @@ deploy-node-exporter: $(KUBECTL) $(KUSTOMIZE) ## Deploy node-exporter on Kuberne
 	sleep 5
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
 
+.PHONY: deploy-prometheus-adapter
+deploy-prometheus-adapter: $(KUBECTL) $(KUSTOMIZE) ## Deploy prometheus-adapter on Kubernetes cluster
+	$(KUSTOMIZE) build ./manifests/prometheus-adapter | $(KUBECTL) apply -f -
+	sleep 5
+	$(KUBECTL) wait pod --all -n prometheus-adapter --for condition=Ready --timeout 180s
+
 .PHONY: deploy-victoriametrics
 deploy-victoriametrics: $(KUBECTL) $(KUSTOMIZE) ## Deploy Victoria Metrics on Kubernetes cluster
 	$(KUSTOMIZE) build ./manifests/victoriametrics | $(KUBECTL) apply -f -
@@ -73,6 +79,7 @@ deploy-monitoring: $(KUBECTL) $(KUSTOMIZE) ## Deploy monitoring system on Kubern
 	make deploy-kube-state-metrics
 	make deploy-victoriametrics
 	make deploy-node-exporter
+	make deploy-prometheus-adapter
 	$(KUSTOMIZE) build ./manifests/monitoring | $(KUBECTL) apply -f -
 	sleep 5
 	$(KUBECTL) wait pod --all -n monitoring-system --for condition=Ready --timeout 180s
@@ -202,7 +209,14 @@ update-kube-state-metrics:
 .PHONY: update-loki
 update-loki:
 	-@helm repo add grafana https://grafana.github.io/helm-charts
+	@helm repo update
 	helm template --release-name loki --namespace loki grafana/loki-stack > manifests/loki/upstream.yaml
+
+.PHONY: update-prometheus-adapter
+update-prometheus-adapter:
+	-@helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	@helm repo update
+	helm template --release-name prometheus-adapter --namespace prometheus-adapter -f ./manifests/prometheus-adapter/values.yaml prometheus-community/prometheus-adapter > manifests/prometheus-adapter/upstream.yaml
 
 .PHONY: help
 help: ## Display this help.

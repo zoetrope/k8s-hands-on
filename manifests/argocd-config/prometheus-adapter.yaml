@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-adapter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zoetrope/k8s-hands-on.git
+    targetRevision: main
+    path: manifests/prometheus-adapter
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prometheus-adapter
+  syncPolicy:
+    automated: {}
