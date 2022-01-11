@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zoetrope/k8s-hands-on.git
-    targetRevision: main
-    path: manifests/victoriametrics
+    repoURL: https://victoriametrics.github.io/helm-charts/
+    chart: victoria-metrics-operator
+    targetRevision: 0.6.0
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring-system

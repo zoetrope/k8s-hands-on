@@ -6,9 +6,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zoetrope/k8s-hands-on.git
-    targetRevision: main
-    path: manifests/kube-state-metrics
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-state-metrics
+    targetRevision: 4.3.0
+    helm:
+      version: v3
+      values: |
+        extraArgs:
+          - --metric-labels-allowlist
+          - namespaces=[team]
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

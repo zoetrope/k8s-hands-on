@@ -6,9 +6,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zoetrope/k8s-hands-on.git
-    targetRevision: main
-    path: manifests/grafana
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: grafana-operator
+    targetRevision: 2.1.1
+    helm:
+      version: v3
+      parameters:
+        - name: grafana.enabled
+          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: grafana

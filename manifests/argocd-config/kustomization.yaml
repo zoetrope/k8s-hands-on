@@ -7,6 +7,7 @@ resources:
   - kube-state-metrics.yaml
   - loki.yaml
   - monitoring.yaml
+  - namespaces.yaml
   - node-exporter.yaml
   - prometheus-adapter.yaml
   - todo.yaml

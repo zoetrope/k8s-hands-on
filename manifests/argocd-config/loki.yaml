@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zoetrope/k8s-hands-on.git
-    targetRevision: main
-    path: manifests/loki
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki-stack
+    targetRevision: 2.5.1
   destination:
     server: https://kubernetes.default.svc
     namespace: loki

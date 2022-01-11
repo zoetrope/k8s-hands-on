@@ -16,19 +16,18 @@
     - https://docs.docker.com/get-docker/
 - make, curl, unzipなどのコマンドのインストール
     - macOSの場合は、Command Line Tools for Xcodeのインストールが必要です。
+- aquaのインストール
+    - https://aquaproj.github.io/docs/tutorial-basics/quick-start
 
 ## 利用方法
 
 ### ツールのセットアップ
 
-```console
-make setup
-```
-
-`bin`ディレクトリにツールがダウンロードされるので、必要に応じてPATHを通してください。
+このハンズオンで利用しているCLIツールは[aqau](https://aquaproj.github.io)で管理しています。
+以下のコマンドでCLIツールのセットアップをおこなってください。
 
 ```console
-PATH=$(pwd)/bin:$PATH
+aqua i -l
 ```
 
 ### Kubernetesクラスタの立ち上げ
@@ -45,37 +44,23 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n kube-system
 ```
 
-### Kubernetesクラスタの終了
+## アプリケーションのデプロイ
 
-ハンズオンを終えたいときや環境を最初から作り直したいときはKubernetesクラスタを削除できます。
-
-```console
-make shutdown-k8s
-```
-
-## モニタリング(VictoriaMetrics, Grafana, kube-state-metrics)
-
-### モニタリングシステムのセットアップ
-
-VictoriaMetrics, Grafana, kube-state-metricsをデプロイします。
+アプリケーションをデプロイします。
 
 ```console
-make deploy-monitoring
+make deploy-application
 ```
 
 PodがすべてReadyになるまで待ちます。
 
 ```console
-watch kubectl get pod -n monitoring-system
+watch kubectl get pod -A
 ```
 
-モニタリング対象のサンプルアプリケーションをデプロイします。
+数分待つとアプリケーションのデプロイが完了します。
 
-```console
-make deploy-todo
-```
-
-### Grafanaの利用
+## Grafanaの利用
 
 ブラウザからGrafanaに接続できるようにPort Forwardします。
 
@@ -91,25 +76,11 @@ make port-forward-grafana
 make grafana-password
 ```
 
-## 継続的デリバリー(ArgoCD)
+## Argo CDの利用
 
-### ArgoCDのセットアップ
+### Argo CDのWeb UIの利用
 
-ArgoCDをデプロイします。
-
-```console
-make deploy-argocd
-```
-
-PodがすべてReadyになるまで待ちます。
-
-```console
-watch kubectl get pod -n argocd
-```
-
-### ArgoCDの利用
-
-ブラウザからArgoCDに接続できるようにPort Forwardします。
+ブラウザからArgo CDに接続できるようにPort Forwardします。
 
 ```console
 make port-forward-argocd
@@ -123,29 +94,34 @@ make port-forward-argocd
 make argocd-password
 ```
 
-ブラウザの画面から、argocd-configのSYNCをおこないます。
-SYNCに成功すると、デプロイ可能なアプリケーションがいくつか表示されます。
+### argocd cliの使い方
 
-続いて必要なアプリケーションのSYNCをおこないます。
-
-- monitoring: モニタリングシステム
-- loki: ログ収集システム
-- todo: サンプルのWebアプリケーション
-  
-しばらく待ってStatusがHealthy/Syncedの状態になれば、デプロイ成功です。
-
-## ロギング(loki)
-
-### ロギングシステムのセットアップ
-
-Loki, Grafanaをデプロイします。
+コマンドラインでArgo CDにデプロイします。
 
 ```console
-make deploy-loki
+make login-argocd
 ```
 
-PodがすべてReadyになるまで待ちます。
+ログインに成功すると、`argocd app list`などのコマンドが実行できるようになります。
+
+## logcliの使い方
+
+LokiをPort Forwardします。
 
 ```console
-watch kubectl get pod -n loki
+make port-forward-loki
+```
+
+以下のようにコマンドを実行すると、CLIからログを確認することができます。
+
+```console
+logcli query '{namespace="argocd"}'
+```
+
+## Kubernetesクラスタの終了
+
+ハンズオンを終えたいときや環境を最初から作り直したいときはKubernetesクラスタを削除できます。
+
+```console
+make shutdown-k8s
 ```

@@ -4,12 +4,16 @@ metadata:
   name: grafana
   namespace: grafana
 spec:
+  client:
+    preferService: true
   ingress:
     enabled: False
   config:
     log:
       mode: "console"
-      level: "warn"
+      level: "false"
+    log.frontend:
+      enabled: true
     auth:
       disable_login_form: False
       disable_signout_menu: True
@@ -22,7 +26,7 @@ spec:
       type: "grafana-service"
   dashboardLabelSelector:
     - matchExpressions:
-        - { key: app, operator: In, values: [ grafana ] }
+        - { key: app, operator: In, values: [grafana] }
   resources:
     # Optionally specify container resources
     limits:
