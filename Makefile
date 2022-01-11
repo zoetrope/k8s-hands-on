@@ -22,7 +22,7 @@ deploy-application: ## Deploy applications on Kubernetes cluster
 	@helm repo add argo https://argoproj.github.io/argo-helm
 	helm install --create-namespace --namespace argocd argocd argo/argo-cd
 	kubectl -n argocd wait --for=condition=available --timeout=180s --all deployments
-	kubectl apply -f ./manifests/argocd-confiig/argocd-config.yaml
+	kubectl apply -f ./manifests/argocd-config/argocd-config.yaml
 
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image
