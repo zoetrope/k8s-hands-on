@@ -1,4 +1,4 @@
-FROM quay.io/cybozu/golang:1.16-focal AS build-server
+FROM quay.io/cybozu/golang:1.17-focal AS build-server
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
@@ -11,14 +11,14 @@ COPY server/ server/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o todo ./cmd/main.go
 
-FROM node:14 AS build-ui
+FROM node:17 AS build-ui
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
 COPY ui/package.json ui/package.json
 COPY ui/package-lock.json ui/package-lock.json
 
-RUN cd ui && npm install
+RUN cd ui && npm ci
 
 COPY ui/ ui/
 RUN cd ui && npm run build
