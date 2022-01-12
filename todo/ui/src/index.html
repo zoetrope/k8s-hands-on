@@ -1,0 +1,46 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./app.css">
+  <script src="./app.js" type="module"></script>
+</head>
+<body>
+
+<nav class="bg-sky-500">
+  <div class="mx-auto px-4">
+    <div class="relative flex items-center justify-between h-16">
+      <p class="text-white font-bold text-lg">
+        ToDo List for k8s-hands-on
+      </p>
+    </div>
+  </div>
+</nav>
+
+<main x-data="app" class="my-10">
+  <div class="max-w-4xl mx-auto px-12 py-8 rounded-lg shadow-lg bg-sky-200">
+    <div class="flex flex-col items-center justify-center mb-8">
+      <input type="text" x-model="newTodo" placeholder="what needs to be done?"
+             class="mx-auto px-4 py-2 rounded shadow text-lg min-w-full" @keydown.enter="add">
+    </div>
+    <div class="bg-white w-full rounded shadow mb-8">
+      <template x-for="(todo, index) in todos" :key="index">
+        <div class="flex items-center py-4" :class="{ 'border-b border-gray-400': ! isLast(index) }">
+          <div class="w-1/12 text-center">
+            <input type="checkbox" @change="update(index)" :checked="todo.done">
+          </div>
+          <div class="w-10/12">
+            <p x-text="todo.name" :class="{ 'line-through': todo.done }"></p>
+          </div>
+          <div class="w-1/12 text-center">
+            <button class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700" @click="remove(index)">
+              &cross;
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</main>
+</body>
+</html>
