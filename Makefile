@@ -19,7 +19,8 @@ shutdown-k8s: ## Shutdown Kubernetes cluster
 
 .PHONY: deploy-application
 deploy-application: ## Deploy applications on Kubernetes cluster
-	@helm repo add argo https://argoproj.github.io/argo-helm
+	helm repo add argo https://argoproj.github.io/argo-helm
+	helm repo update
 	helm install --create-namespace --namespace argocd argocd argo/argo-cd
 	kubectl -n argocd wait --for=condition=available --timeout=180s --all deployments
 	kubectl apply -f ./manifests/argocd-config/argocd-config.yaml
