@@ -12,3 +12,4 @@ packages:
 - name: helm/helm@v3.7.2
 - name: grafana/loki/logcli@v2.4.2
 - name: kubernetes/kubectl@v1.23.3
+- name: stedolan/jq@jq-1.6
