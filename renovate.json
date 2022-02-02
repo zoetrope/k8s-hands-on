@@ -1,6 +1,11 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "github>aquaproj/aqua-renovate-config#0.1.8",
+    ":timezone(Asia/Tokyo)"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy"
   ],
   "argocd": {
     "fileMatch": [
