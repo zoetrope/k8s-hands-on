@@ -23,12 +23,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make launch-k8s
       - run: make deploy-application
-      - run: |
+      - name: wait for sync
+        run: |
           make port-forward-argocd
           make login-argocd
-          argocd app wait monitoring --timeout 300
-      - run: |
-          IFS=$'\n'; for item in $(kubectl get app -A -o json | jq -c '.items[]'); do
+          retry sh -c 'kubectl get app -n argocd -o json | jq ".items | length" | t 10'
+          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
+            retry -max-time 5m argocd app wait $item --timeout 300
+          done
+      - name: check status
+        run: |
+          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -c '.items[]'); do
             echo $item | jq -r .metadata.name
             echo $item | jq -r .status.health.status | t Healthy
             echo $item | jq -r .status.sync.status | t Synced
