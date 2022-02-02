@@ -10,5 +10,5 @@ packages:
 - name: kubernetes-sigs/kustomize@kustomize/v4.4.1
 - name: argoproj/argo-cd@v2.2.2
 - name: helm/helm@v3.7.2
-- name: grafana/loki/logcli@v2.4.1
+- name: grafana/loki/logcli@v2.4.2
 - name: kubernetes/kubectl@v1.23.1
