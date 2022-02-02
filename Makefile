@@ -43,12 +43,13 @@ grafana-password: ## Show admin password for Grafana
 
 .PHONY: port-forward-argocd
 port-forward-argocd:
-	kubectl port-forward -n argocd service/argocd-server 8080:80 > /dev/null 2>&1 & jobs -p > ./bin/argocd.pid
+	mkdir -p ./tmp/
+	kubectl port-forward -n argocd service/argocd-server 8080:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-argocd.pid
 
 .PHONY: stop-port-forward-argocd
 stop-port-forward-argocd:
-	echo "kill `cat ./bin/argocd.pid`" && kill `cat ./bin/argocd.pid`
-	rm ./bin/argocd.pid
+	echo "kill `cat ./tmp/port-forward-argocd.pid`" && kill `cat ./tmp/port-forward-argocd.pid`
+	rm ./tmp/port-forward-argocd.pid
 
 .PHONY: login-argocd
 login-argocd:
@@ -56,30 +57,33 @@ login-argocd:
 
 .PHONY: port-forward-grafana
 port-forward-grafana:
-	kubectl port-forward -n grafana service/grafana-service 3000:3000 > /dev/null 2>&1 & jobs -p > ./bin/grafana.pid
+	mkdir -p ./tmp/
+	kubectl port-forward -n grafana service/grafana-service 3000:3000 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-grafana.pid
 
 .PHONY: stop-port-forward-grafana
 stop-port-forward-grafana:
-	echo "kill `cat ./bin/grafana.pid`" && kill `cat ./bin/grafana.pid`
-	rm ./bin/grafana.pid
+	echo "kill `cat ./tmp/port-forward-grafana.pid`" && kill `cat ./tmp/port-forward-grafana.pid`
+	rm ./tmp/port-forward-grafana.pid
 
 .PHONY: port-forward-loki
 port-forward-loki:
-	kubectl port-forward -n loki service/loki 3100:3100 > /dev/null 2>&1 & jobs -p > ./bin/loki.pid
+	mkdir -p ./tmp/
+	kubectl port-forward -n loki service/loki 3100:3100 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-loki.pid
 
 .PHONY: stop-port-forward-loki
 stop-port-forward-loki:
-	echo "kill `cat ./bin/loki.pid`" && kill `cat ./bin/loki.pid`
-	rm ./bin/loki.pid
+	echo "kill `cat ./tmp/port-forward-loki.pid`" && kill `cat ./tmp/port-forward-loki.pid`
+	rm ./tmp/port-forward-loki.pid
 
 .PHONY: port-forward-todo
 port-forward-todo:
-	kubectl port-forward -n todo service/todo 9999:80 > /dev/null 2>&1 & jobs -p > ./bin/todo.pid
+	mkdir -p ./tmp/
+	kubectl port-forward -n todo service/todo 9999:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-todo.pid
 
 .PHONY: stop-port-forward-todo
 stop-port-forward-todo:
-	echo "kill `cat ./bin/todo.pid`" && kill `cat ./bin/todo.pid`
-	rm ./bin/todo.pid
+	echo "kill `cat ./tmp/port-forward-todo.pid`" && kill `cat ./tmp/port-forward-todo.pid`
+	rm ./tmp/port-forward-todo.pid
 
 .PHONY: help
 help: ## Display this help.

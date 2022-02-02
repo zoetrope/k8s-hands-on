@@ -4,6 +4,9 @@
 registries:
 - type: standard
   ref: v0.14.4 # renovate: depName=aquaproj/aqua-registry
+- type: local
+  name: local
+  path: registry.yaml
 
 packages:
 - name: kubernetes-sigs/kind@v0.11.1
@@ -12,3 +15,6 @@ packages:
 - name: helm/helm@v3.7.2
 - name: grafana/loki/logcli@v2.4.2
 - name: kubernetes/kubectl@v1.23.3
+- name: stedolan/jq@jq-1.6
+- name: joshdk/retry@v1.3.1
+  registry: local

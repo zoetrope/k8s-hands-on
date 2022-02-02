@@ -1,21 +1,40 @@
 name: CI
 on:
+  pull_request:
   push:
     branches:
       - 'main'
 env:
   go-version: 1.17
-  cache-version: 1
 jobs:
-  deploy:
-    name: Push the latest image
+  sync:
+    name: Sync all applications
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ env.go-version }}
-      - run: docker build -t ghcr.io/zoetrope/todo:latest ./todo
-      - name: Login to ghcr.io
-        run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-      - run: docker push ghcr.io/zoetrope/todo:latest
+      - run: go install github.com/yusukebe/t/cmd/t@latest
+      - uses: aquaproj/aqua-installer@v0.7.0
+        with:
+          aqua_version: v0.10.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: make launch-k8s
+      - run: make deploy-application
+      - name: wait for sync
+        run: |
+          make port-forward-argocd
+          make login-argocd
+          retry sh -c 'kubectl get app -n argocd -o json | jq ".items | length" | t 10'
+          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
+            retry -max-time 5m argocd app wait $item --timeout 300
+          done
+      - name: check status
+        run: |
+          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -c '.items[]'); do
+            echo $item | jq -r .metadata.name
+            echo $item | jq -r .status.health.status | t Healthy
+            echo $item | jq -r .status.sync.status | t Synced
+          done
