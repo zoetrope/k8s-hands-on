@@ -1,9 +1,0 @@
-packages:
-- type: github_release
-  repo_owner: joshdk
-  repo_name: retry
-  asset: 'retry-{{.OS}}-{{.Arch}}.{{.Format}}'
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
