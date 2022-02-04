@@ -29,7 +29,7 @@ jobs:
           make login-argocd
           retry sh -c 'kubectl get app -n argocd -o json | jq ".items | length" | t 10'
           IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
-            retry -max-time 5m argocd app wait $item --timeout 300
+            retry -max-time 15m argocd app wait $item --timeout 300
           done
       - name: check status
         run: |
