@@ -10,6 +10,9 @@ spec:
   podScrapeNamespaceSelector:
     matchLabels:
       kubernetes.io/metadata.name: monitoring-system
+  nodeScrapeNamespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: monitoring-system
   replicaCount: 1
   remoteWrite:
     - url: "http://vmsingle-database.monitoring-system.svc:8429/api/v1/write"
