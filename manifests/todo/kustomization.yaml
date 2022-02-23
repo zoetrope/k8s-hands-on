@@ -7,3 +7,4 @@ resources:
   - service.yaml
   - request.yaml
   - monitoring
+  - hpa.yaml

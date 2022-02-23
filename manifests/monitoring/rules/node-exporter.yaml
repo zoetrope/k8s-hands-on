@@ -13,7 +13,7 @@ spec:
         targetLabel: job
       - sourceLabels: [__meta_kubernetes_endpoints_name]
         action: keep
-        regex: node-exporter
+        regex: node-exporter-prometheus-node-exporter
       - source_labels: [__address__]
         action: replace
         regex: ([^:]+)(?::\d+)?
