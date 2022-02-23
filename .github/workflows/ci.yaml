@@ -16,7 +16,7 @@ jobs:
         with:
           go-version: ${{ env.go-version }}
       - run: go install github.com/yusukebe/t/cmd/t@latest
-      - uses: aquaproj/aqua-installer@v0.7.0
+      - uses: aquaproj/aqua-installer@v1.0.0
         with:
           aqua_version: v0.10.2
         env:
