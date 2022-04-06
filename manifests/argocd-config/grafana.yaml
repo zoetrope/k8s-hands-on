@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: grafana-operator
-    targetRevision: 2.3.2
+    targetRevision: 2.3.5
     helm:
       version: v3
       parameters:
