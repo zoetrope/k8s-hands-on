@@ -11,7 +11,7 @@ COPY server/ server/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o todo ./cmd/main.go
 
-FROM node:17 AS build-ui
+FROM node:18 AS build-ui
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
