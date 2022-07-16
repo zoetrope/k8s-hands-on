@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://victoriametrics.github.io/helm-charts/
     chart: victoria-metrics-operator
-    targetRevision: 0.10.2
+    targetRevision: 0.10.3
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring-system
