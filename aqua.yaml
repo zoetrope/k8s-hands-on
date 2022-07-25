@@ -10,7 +10,7 @@ packages:
 - name: kubernetes-sigs/kustomize@kustomize/v4.5.5
 - name: argoproj/argo-cd@v2.4.7
 - name: helm/helm@v3.9.2
-- name: grafana/loki/logcli@v2.5.0
+- name: grafana/loki/logcli@v2.6.1
 - name: kubernetes/kubectl@v1.24.3
 - name: stedolan/jq@jq-1.6
 - name: joshdk/retry@v1.3.1
