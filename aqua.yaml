@@ -9,7 +9,7 @@ packages:
 - name: kubernetes-sigs/kind@v0.14.0
 - name: kubernetes-sigs/kustomize@kustomize/v4.5.7
 - name: argoproj/argo-cd@v2.4.8
-- name: helm/helm@v3.9.2
+- name: helm/helm@v3.9.3
 - name: grafana/loki/logcli@v2.6.1
 - name: kubernetes/kubectl@v1.24.3
 - name: stedolan/jq@jq-1.6
