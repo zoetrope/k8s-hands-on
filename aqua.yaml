@@ -11,6 +11,6 @@ packages:
 - name: argoproj/argo-cd@v2.4.15
 - name: helm/helm@v3.9.4
 - name: grafana/loki/logcli@v2.6.1
-- name: kubernetes/kubectl@v1.25.3
+- name: kubernetes/kubectl@v1.25.4
 - name: stedolan/jq@jq-1.6
 - name: joshdk/retry@v1.3.1
