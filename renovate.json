@@ -12,5 +12,6 @@
     "fileMatch": [
       "^manifests\/argocd-config\/.*.yaml$"
     ]
-  }
+  },
+  "automerge": true
 }
