@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-state-metrics
-    targetRevision: 4.24.0
+    targetRevision: 4.25.0
     helm:
       version: v3
       values: |
