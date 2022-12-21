@@ -23,7 +23,7 @@ RUN cd ui && npm ci
 COPY ui/ ui/
 RUN cd ui && npm run build
 
-FROM quay.io/cybozu/ubuntu:20.04 AS runtime
+FROM quay.io/cybozu/ubuntu:22.04 AS runtime
 
 LABEL org.opencontainers.image.source https://github.com/zoetrope/k8s-hands-on
 
