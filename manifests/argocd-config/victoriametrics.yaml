@@ -9,6 +9,11 @@ spec:
     repoURL: https://victoriametrics.github.io/helm-charts/
     chart: victoria-metrics-operator
     targetRevision: 0.16.1
+    helm:
+      version: v3
+      parameters:
+        - name: rbac.pspEnabled
+          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring-system

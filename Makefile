@@ -1,4 +1,4 @@
-KUBERNETES_VERSION := 1.23.0
+KUBERNETES_VERSION := 1.25.3
 
 KIND_CLUSTER_NAME=hands-on
 
@@ -44,7 +44,7 @@ grafana-password: ## Show admin password for Grafana
 .PHONY: port-forward-argocd
 port-forward-argocd:
 	mkdir -p ./tmp/
-	kubectl port-forward -n argocd service/argocd-server 8080:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-argocd.pid
+	kubectl port-forward -n argocd service/argocd-server 8000:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-argocd.pid
 
 .PHONY: stop-port-forward-argocd
 stop-port-forward-argocd:
@@ -53,7 +53,7 @@ stop-port-forward-argocd:
 
 .PHONY: login-argocd
 login-argocd:
-	argocd login localhost:8080 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+	argocd login localhost:8000 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 .PHONY: port-forward-grafana
 port-forward-grafana:

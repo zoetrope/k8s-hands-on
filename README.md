@@ -86,7 +86,7 @@ make grafana-password
 make port-forward-argocd
 ```
 
-ブラウザを開いて http://localhost:8080 にアクセスしてください。
+ブラウザを開いて http://localhost:8000 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Username: admin でログインします。
 
