@@ -41,6 +41,20 @@ argocd-password: ## Show admin password for ArgoCD
 grafana-password: ## Show admin password for Grafana
 	@kubectl get secrets -n grafana grafana-admin-credentials -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d
 
+.PHONY: grafana-api-token
+grafana-api-token:
+	$(eval GRAFANA_PASSWORD := $(shell $(MAKE) grafana-password))
+	$(eval TOKEN_ID := $(shell curl -sS http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys | jq '.[] | select(.name=="promlens_key") | .id'))
+	@if [ -n "$(TOKEN_ID)" ]; then \
+		curl -sS -X DELETE http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys/$(TOKEN_ID); \
+	fi
+	curl -X POST -H "Content-Type: application/json" -d '{"name":"promlens_key", "role": "Admin"}' http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys | jq -r .key > ./bin/GRAFANA_API_TOKEN
+
+.PHONY: promlens
+promlens: grafana-api-token
+	$(eval GRAFANA_API_TOKEN := $(shell cat ./bin/GRAFANA_API_TOKEN))
+	promlens --grafana.url=http://localhost:3000 --grafana.api-token=$(GRAFANA_API_TOKEN)
+
 .PHONY: port-forward-argocd
 port-forward-argocd:
 	mkdir -p ./tmp/

@@ -14,3 +14,4 @@ packages:
 - name: kubernetes/kubectl@v1.26.0
 - name: stedolan/jq@jq-1.6
 - name: joshdk/retry@v1.4.0
+- name: prometheus/promlens@v0.3.0
