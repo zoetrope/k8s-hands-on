@@ -18,7 +18,7 @@ jobs:
       - run: go install github.com/yusukebe/t/cmd/t@latest
       - uses: aquaproj/aqua-installer@v2.0.2
         with:
-          aqua_version: v1.27.0
+          aqua_version: v1.28.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make launch-k8s
