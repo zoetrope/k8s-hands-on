@@ -55,49 +55,18 @@ promlens: grafana-api-token
 	$(eval GRAFANA_API_TOKEN := $(shell cat ./bin/GRAFANA_API_TOKEN))
 	promlens --grafana.url=http://localhost:3000 --grafana.api-token=$(GRAFANA_API_TOKEN)
 
-.PHONY: port-forward-argocd
-port-forward-argocd:
-	mkdir -p ./tmp/
-	kubectl port-forward -n argocd service/argocd-server 8000:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-argocd.pid
-
-.PHONY: stop-port-forward-argocd
-stop-port-forward-argocd:
-	echo "kill `cat ./tmp/port-forward-argocd.pid`" && kill `cat ./tmp/port-forward-argocd.pid`
-	rm ./tmp/port-forward-argocd.pid
-
 .PHONY: login-argocd
 login-argocd:
 	argocd login localhost:8000 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-.PHONY: port-forward-grafana
-port-forward-grafana:
-	mkdir -p ./tmp/
-	kubectl port-forward -n grafana service/grafana-service 3000:3000 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-grafana.pid
+.PHONY: portforward
+portforward:
+	mkdir -p /tmp/dpf
+	declarative-port-forwarder start --config ./portforward.yaml
 
-.PHONY: stop-port-forward-grafana
-stop-port-forward-grafana:
-	echo "kill `cat ./tmp/port-forward-grafana.pid`" && kill `cat ./tmp/port-forward-grafana.pid`
-	rm ./tmp/port-forward-grafana.pid
-
-.PHONY: port-forward-loki
-port-forward-loki:
-	mkdir -p ./tmp/
-	kubectl port-forward -n loki service/loki 3100:3100 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-loki.pid
-
-.PHONY: stop-port-forward-loki
-stop-port-forward-loki:
-	echo "kill `cat ./tmp/port-forward-loki.pid`" && kill `cat ./tmp/port-forward-loki.pid`
-	rm ./tmp/port-forward-loki.pid
-
-.PHONY: port-forward-todo
-port-forward-todo:
-	mkdir -p ./tmp/
-	kubectl port-forward -n todo service/todo 9999:80 > /dev/null 2>&1 & jobs -p > ./tmp/port-forward-todo.pid
-
-.PHONY: stop-port-forward-todo
-stop-port-forward-todo:
-	echo "kill `cat ./tmp/port-forward-todo.pid`" && kill `cat ./tmp/port-forward-todo.pid`
-	rm ./tmp/port-forward-todo.pid
+.PHONY: stop-portforward
+stop-portforward:
+	declarative-port-forwarder stop
 
 .PHONY: help
 help: ## Display this help.

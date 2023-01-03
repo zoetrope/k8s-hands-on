@@ -44,6 +44,12 @@ PodがすべてReadyになるまで待ちます。
 watch kubectl get pod -n kube-system
 ```
 
+各サービスをPort Forwardします。
+
+```console
+make portforward
+```
+
 ## アプリケーションのデプロイ
 
 アプリケーションをデプロイします。
@@ -62,12 +68,6 @@ watch kubectl get pod -A
 
 ## Grafanaの利用
 
-ブラウザからGrafanaに接続できるようにPort Forwardします。
-
-```console
-make port-forward-grafana
-```
-
 ブラウザを開いて http://localhost:3000 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
@@ -79,12 +79,6 @@ make grafana-password
 ## Argo CDの利用
 
 ### Argo CDのWeb UIの利用
-
-ブラウザからArgo CDに接続できるようにPort Forwardします。
-
-```console
-make port-forward-argocd
-```
 
 ブラウザを開いて http://localhost:8000 にアクセスしてください。
 
@@ -106,12 +100,6 @@ make login-argocd
 
 ## logcliの使い方
 
-LokiをPort Forwardします。
-
-```console
-make port-forward-loki
-```
-
 以下のようにコマンドを実行すると、CLIからログを確認することができます。
 
 ```console
@@ -124,4 +112,5 @@ logcli query '{namespace="argocd"}'
 
 ```console
 make shutdown-k8s
+make stop-portforward
 ```

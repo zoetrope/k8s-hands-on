@@ -1,0 +1,21 @@
+targets:
+  - type: Deployment
+    namespace: grafana
+    name: grafana-deployment
+    ports:
+      - "3000:3000"
+  - type: Deployment
+    namespace: argocd
+    name: argocd-server
+    ports:
+      - "8000:8080"
+  - type: StatefulSet
+    namespace: loki
+    name: loki
+    ports:
+      - "3100:3100"
+  - type: Service
+    namespace: todo
+    name: todo
+    ports:
+      - "9999:80"
