@@ -9,5 +9,6 @@ resources:
   - namespaces.yaml
   - node-exporter.yaml
   - prometheus-adapter.yaml
+  - prometheus.yaml
   - sandbox.yaml
   - victoriametrics.yaml

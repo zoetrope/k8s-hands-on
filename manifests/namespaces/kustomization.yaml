@@ -4,5 +4,6 @@ resources:
   - argocd.yaml
   - grafana.yaml
   - loki.yaml
-  - monitoring-system.yaml
   - prometheus-adapter.yaml
+  - prometheus.yaml
+  - victoriametrics.yaml

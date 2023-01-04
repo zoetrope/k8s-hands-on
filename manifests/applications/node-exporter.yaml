@@ -11,4 +11,4 @@ spec:
     targetRevision: 4.8.1
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring-system
+    namespace: kube-system

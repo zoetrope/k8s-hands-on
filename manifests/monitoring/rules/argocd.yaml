@@ -2,7 +2,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
   name: argocd
-  namespace: monitoring-system
+  namespace: victoriametrics
 spec:
   discoveryRole: service
   namespaceSelector:

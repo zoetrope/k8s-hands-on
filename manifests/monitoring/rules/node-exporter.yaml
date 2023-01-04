@@ -2,10 +2,10 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
   name: node-exporter
-  namespace: monitoring-system
+  namespace: victoriametrics
 spec:
   namespaceSelector:
-    matchNames: [monitoring-system]
+    matchNames: [kube-system]
   selector: {}
   endpoints:
   - relabelConfigs:

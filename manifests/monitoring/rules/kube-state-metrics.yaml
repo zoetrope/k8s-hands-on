@@ -2,7 +2,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
   name: kube-state-metrics
-  namespace: monitoring-system
+  namespace: victoriametrics
 spec:
   discoveryRole: service
   namespaceSelector:
@@ -23,7 +23,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMPodScrape
 metadata:
   name: kube-state-metrics-telemetry
-  namespace: monitoring-system
+  namespace: victoriametrics
 spec:
   namespaceSelector:
     matchNames: [kube-system]
