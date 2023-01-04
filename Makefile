@@ -36,6 +36,18 @@ sync-applications: ## Sync Applications
 		argocd app wait $$app --timeout 300; \
 	done
 
+.PHONY: local-sync-applications
+local-sync-applications: ## Sync Applications with local manifests
+	$(eval APPS := $(shell kustomize build ./manifests/applications/ | yq ea [.] -o json | jq -r '. | sort_by(.metadata.annotations."argocd.argoproj.io/sync-wave" // "0" | tonumber) | .[] | .metadata.name'))
+	for app in $(APPS); do \
+		if [ $$app = "namespaces" ] || [ $$app = "monitoring" ] || [ $$app = "sandbox" ]; then \
+			argocd app sync $$app --local=./manifests/$$app --retry-limit 3 --timeout 300; \
+		else \
+			argocd app sync $$app --retry-limit 3 --timeout 300; \
+		fi; \
+		argocd app wait $$app --timeout 300; \
+	done
+
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image
 	docker build -t todo:v1 ./todo
@@ -50,25 +62,25 @@ argocd-password: ## Show admin password for ArgoCD
 
 .PHONY: grafana-password
 grafana-password: ## Show admin password for Grafana
-	@kubectl get secrets -n grafana grafana-admin-credentials -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d
+	@kubectl get secrets -n prometheus prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d
 
 .PHONY: grafana-api-token
 grafana-api-token:
 	$(eval GRAFANA_PASSWORD := $(shell $(MAKE) grafana-password))
-	$(eval TOKEN_ID := $(shell curl -sS http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys | jq '.[] | select(.name=="promlens_key") | .id'))
+	$(eval TOKEN_ID := $(shell curl -sS http://admin:$(GRAFANA_PASSWORD)@localhost:33000/api/auth/keys | jq '.[] | select(.name=="promlens_key") | .id'))
 	@if [ -n "$(TOKEN_ID)" ]; then \
-		curl -sS -X DELETE http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys/$(TOKEN_ID); \
+		curl -sS -X DELETE http://admin:$(GRAFANA_PASSWORD)@localhost:33000/api/auth/keys/$(TOKEN_ID); \
 	fi
-	curl -X POST -H "Content-Type: application/json" -d '{"name":"promlens_key", "role": "Admin"}' http://admin:$(GRAFANA_PASSWORD)@localhost:3000/api/auth/keys | jq -r .key > ./bin/GRAFANA_API_TOKEN
+	curl -X POST -H "Content-Type: application/json" -d '{"name":"promlens_key", "role": "Admin"}' http://admin:$(GRAFANA_PASSWORD)@localhost:33000/api/auth/keys | jq -r .key > ./bin/GRAFANA_API_TOKEN
 
 .PHONY: promlens
 promlens: grafana-api-token
 	$(eval GRAFANA_API_TOKEN := $(shell cat ./bin/GRAFANA_API_TOKEN))
-	promlens --grafana.url=http://localhost:3000 --grafana.api-token=$(GRAFANA_API_TOKEN)
+	promlens --grafana.url=http://localhost:33000 --grafana.api-token=$(GRAFANA_API_TOKEN)
 
 .PHONY: login-argocd
 login-argocd:
-	argocd login localhost:8000 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+	argocd login localhost:30080 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 .PHONY: portforward
 portforward:

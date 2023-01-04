@@ -14,7 +14,7 @@ spec:
       parameters:
         - name: rbac.pspEnabled
           value: "false"
-        - name: operator.disable_prometheus_converter
+        - name: operator.prometheus_converter_add_argocd_ignore_annotations
           value: "true"
   destination:
     server: https://kubernetes.default.svc

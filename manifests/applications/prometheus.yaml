@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: prometheus
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   project: default
   source:
@@ -12,12 +14,38 @@ spec:
     helm:
       version: v3
       values: |
-        kubeStateMetrics:
-          enabled: false
-        nodeExporter:
-          enabled: false
+        prometheusOperator:
+          admissionWebhooks:
+            patch:
+              enabled: false
+            certManager:
+              enabled: true
+        kube-state-metrics:
+          extraArgs:
+            - --metric-labels-allowlist
+            - namespaces=[team]
         grafana:
-          enabled: false
+          additionalDataSources:
+            - name: Loki
+              type: loki
+              access: proxy
+              url: http://loki.loki.svc:3100
+              version: 1
+              isDefault: false
+              editable: false
+              jsonData:
+                tlsSkipVerify: true
+                timeInterval: "30s"
+            - name: VictoriaMetrics
+              type: prometheus
+              access: proxy
+              url: http://vmsingle-database.victoriametrics:8429
+              isDefault: false
+              version: 1
+              editable: true
+              jsonData:
+                tlsSkipVerify: true
+                timeInterval: "5s"
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus

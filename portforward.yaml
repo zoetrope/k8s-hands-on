@@ -1,26 +1,26 @@
 targets:
   - type: Deployment
-    namespace: grafana
-    name: grafana-deployment
-    ports:
-      - "3000:3000"
-  - type: Deployment
     namespace: argocd
     name: argocd-server
     ports:
-      - "8000:8080"
+      - "30080:8080"
+  - type: Service
+    namespace: prometheus
+    name: prometheus-grafana
+    ports:
+      - "33000:80"
   - type: StatefulSet
     namespace: loki
     name: loki
     ports:
-      - "3100:3100"
+      - "33100:3100"
   - type: Service
     namespace: sandbox
     name: todo
     ports:
-      - "9999:80"
+      - "38000:80"
   - type: Deployment
     namespace: sandbox
     name: dummy-metrics
     ports:
-      - "38000:8080"
+      - "39000:8080"

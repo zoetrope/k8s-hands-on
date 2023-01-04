@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: cert-manager
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: grafana-operator
-    targetRevision: 2.7.13
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: 1.10.1
     helm:
       version: v3
       parameters:
-        - name: grafana.enabled
-          value: "false"
+        - name: installCRDs
+          value: "true"
   destination:
     server: https://kubernetes.default.svc
-    namespace: grafana
+    namespace: cert-manager

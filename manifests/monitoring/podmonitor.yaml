@@ -1,11 +1,14 @@
-apiVersion: operator.victoriametrics.com/v1beta1
-kind: VMPodScrape
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
 metadata:
   name: todo
-  namespace: sandbox
+  namespace: prometheus
+  labels:
+    release: prometheus
 spec:
   namespaceSelector:
-    matchNames: [sandbox]
+    matchNames:
+      - sandbox
   selector:
     matchLabels:
       app.kubernetes.io/name: todo
@@ -14,14 +17,17 @@ spec:
       scheme: http
       path: /metrics
 ---
-apiVersion: operator.victoriametrics.com/v1beta1
-kind: VMPodScrape
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
 metadata:
   name: dummy-metrics
-  namespace: sandbox
+  namespace: prometheus
+  labels:
+    release: prometheus
 spec:
   namespaceSelector:
-    matchNames: [sandbox]
+    matchNames:
+      - sandbox
   selector:
     matchLabels:
       app.kubernetes.io/name: dummy-metrics
