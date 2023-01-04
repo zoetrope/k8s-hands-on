@@ -10,24 +10,31 @@ launch-k8s: ## Launch Kubernetes cluster with kind
 		kind create cluster --name=$(KIND_CLUSTER_NAME) --config kind-config.yaml --image kindest/node:v$(KUBERNETES_VERSION) --wait 180s; \
 		kubectl wait pod --all -n kube-system --for condition=Ready --timeout 180s; \
 	fi
+	$(MAKE) portforward
 
 .PHONY: shutdown-k8s
 shutdown-k8s: ## Shutdown Kubernetes cluster
 	if [ "$(shell kind get clusters | grep $(KIND_CLUSTER_NAME))" ]; then \
 		kind delete cluster --name=$(KIND_CLUSTER_NAME) || true; \
 	fi
+	$(MAKE) stop-portforward
 
-.PHONY: deploy-application
-deploy-application: ## Deploy applications on Kubernetes cluster
+.PHONY: deploy-argocd
+deploy-argocd: ## Deploy Argo CD on Kubernetes cluster
 	helm repo add argo https://argoproj.github.io/argo-helm
 	helm repo update
 	helm install --create-namespace --namespace argocd argocd argo/argo-cd
 	kubectl -n argocd wait --for=condition=available --timeout=300s --all deployments
-	kubectl apply -f ./manifests/argocd-config/argocd-config.yaml
-	$(MAKE) portforward
-	sleep 3
+	kustomize build ./manifests/applications | kubectl apply -f -
 	$(MAKE) login-argocd
-	argocd app sync argocd-config
+
+.PHONY: sync-applications
+sync-applications: ## Sync Applications
+	$(eval APPS := $(shell kustomize build ./manifests/applications/ | yq ea [.] -o json | jq -r '. | sort_by(.metadata.annotations."argocd.argoproj.io/sync-wave" // "0" | tonumber) | .[] | .metadata.name'))
+	for app in $(APPS); do \
+		argocd app sync $$app --retry-limit 3 --timeout 300; \
+		argocd app wait $$app --timeout 300; \
+	done
 
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image

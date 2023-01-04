@@ -22,13 +22,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make launch-k8s
-      - run: make deploy-application
-      - name: wait for sync
+      - run: make deploy-argocd
+      - name: patch targetRevision
         run: |
-          retry sh -c 'kubectl get app -n argocd -o json | jq ".items | length" | t 10'
-          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
-            retry -max-time 15m argocd app wait $item --timeout 300
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            BRANCH_NAME=${GITHUB_HEAD_REF}
+          else
+            BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          fi
+          echo change targetRevision to ${BRANCH_NAME}
+          for app in namespaces monitoring sandbox; do
+            kubectl patch -n argocd applications $app --type=json -p="[{'op':'replace','path':'/spec/source/targetRevision','value':${BRANCH_NAME}}]"
           done
+      - run: make sync-applications
       - name: check status
         run: |
           IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -c '.items[]'); do

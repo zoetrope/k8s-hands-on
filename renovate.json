@@ -9,7 +9,7 @@
   ],
   "argocd": {
     "fileMatch": [
-      "^manifests\/argocd-config\/.*.yaml$"
+      "^manifests\/applications\/.*.yaml$"
     ]
   },
   "automerge": true
