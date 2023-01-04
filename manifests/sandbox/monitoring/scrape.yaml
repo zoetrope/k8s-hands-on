@@ -1,0 +1,31 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: todo
+  namespace: sandbox
+spec:
+  namespaceSelector:
+    matchNames: [sandbox]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: todo
+  podMetricsEndpoints:
+    - port: http
+      scheme: http
+      path: /metrics
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: dummy-metrics
+  namespace: sandbox
+spec:
+  namespaceSelector:
+    matchNames: [sandbox]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dummy-metrics
+  podMetricsEndpoints:
+    - port: http
+      scheme: http
+      path: /metrics

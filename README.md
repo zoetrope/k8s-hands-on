@@ -38,18 +38,6 @@ kindでKubernetesクラスタを起動します。
 make launch-k8s
 ```
 
-PodがすべてReadyになるまで待ちます。
-
-```console
-watch kubectl get pod -n kube-system
-```
-
-各サービスをPort Forwardします。
-
-```console
-make portforward
-```
-
 ## アプリケーションのデプロイ
 
 アプリケーションをデプロイします。
@@ -58,10 +46,10 @@ make portforward
 make deploy-application
 ```
 
-PodがすべてReadyになるまで待ちます。
+ApplicationがすべてSyncedになるまで待ちます。
 
 ```console
-watch kubectl get pod -A
+watch arogcd app list
 ```
 
 数分待つとアプリケーションのデプロイが完了します。

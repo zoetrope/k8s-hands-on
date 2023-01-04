@@ -10,5 +10,5 @@ resources:
   - namespaces.yaml
   - node-exporter.yaml
   - prometheus-adapter.yaml
-  - todo.yaml
+  - sandbox.yaml
   - victoriametrics.yaml

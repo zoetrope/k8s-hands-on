@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy-metrics
+  labels:
+    app.kubernetes.io/name: dummy-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dummy-metrics
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dummy-metrics
+    spec:
+      containers:
+        - name: dummy-metrics
+          image: ghcr.io/zoetrope/dummy-metrics:latest
+          imagePullPolicy: Always
+          command: ["/dummy-metrics", "/config/metrics.txt"]
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: metrics-volume
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: 10Mi
+            limits:
+              cpu: "1"
+              memory: 100Mi
+      volumes:
+        - name: metrics-volume
+          configMap:
+            name: metrics-configmap

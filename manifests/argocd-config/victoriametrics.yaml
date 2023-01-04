@@ -17,5 +17,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring-system
-  syncPolicy:
-    automated: {}
