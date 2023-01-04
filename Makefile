@@ -24,6 +24,10 @@ deploy-application: ## Deploy applications on Kubernetes cluster
 	helm install --create-namespace --namespace argocd argocd argo/argo-cd
 	kubectl -n argocd wait --for=condition=available --timeout=300s --all deployments
 	kubectl apply -f ./manifests/argocd-config/argocd-config.yaml
+	$(MAKE) portforward
+	sleep 3
+	$(MAKE) login-argocd
+	argocd app sync argocd-config
 
 .PHONY: build-todo-image
 build-todo-image: ## Build todo container image

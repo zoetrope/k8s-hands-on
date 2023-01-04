@@ -25,9 +25,6 @@ jobs:
       - run: make deploy-application
       - name: wait for sync
         run: |
-          make portforward
-          sleep 3
-          make login-argocd
           retry sh -c 'kubectl get app -n argocd -o json | jq ".items | length" | t 10'
           IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
             retry -max-time 15m argocd app wait $item --timeout 300
