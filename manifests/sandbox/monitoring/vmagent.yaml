@@ -1,13 +1,13 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAgent
 metadata:
-  name: todo-agent
-  namespace: todo
+  name: sandbox-agent
+  namespace: sandbox
 spec:
   replicaCount: 1
   remoteWrite:
     - url: "http://vmsingle-database.monitoring-system.svc:8429/api/v1/write"
   podScrapeNamespaceSelector:
     matchLabels:
-      kubernetes.io/metadata.name: todo
+      kubernetes.io/metadata.name: sandbox
   scrapeInterval: 30s

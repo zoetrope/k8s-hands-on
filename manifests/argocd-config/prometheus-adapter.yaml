@@ -50,5 +50,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus-adapter
-  syncPolicy:
-    automated: {}

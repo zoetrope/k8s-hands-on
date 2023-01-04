@@ -2,7 +2,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
   name: vmrule
-  namespace: todo
+  namespace: sandbox
 spec:
   groups:
     - name: todo

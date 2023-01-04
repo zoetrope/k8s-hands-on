@@ -15,7 +15,12 @@ targets:
     ports:
       - "3100:3100"
   - type: Service
-    namespace: todo
+    namespace: sandbox
     name: todo
     ports:
       - "9999:80"
+  - type: Deployment
+    namespace: sandbox
+    name: dummy-metrics
+    ports:
+      - "38000:8080"

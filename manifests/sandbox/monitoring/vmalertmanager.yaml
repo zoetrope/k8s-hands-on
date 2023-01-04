@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: alertmanager-setting
-  namespace: todo
+  namespace: sandbox
 type: Opaque
 stringData:
   alertmanager.yaml: |
@@ -21,7 +21,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlertmanager
 metadata:
   name: alertmanager
-  namespace: todo
+  namespace: sandbox
 spec:
   replicaCount: 1
   configSecret: alertmanager-setting
