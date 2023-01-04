@@ -8,14 +8,15 @@ registries:
     type: local
     path: registry.yaml
 packages:
+  - name: argoproj/argo-cd@v2.5.5
+  - name: grafana/loki/logcli@v2.7.1
+  - name: helm/helm@v3.10.3
+  - name: joshdk/retry@v1.4.0
   - name: kubernetes-sigs/kind@v0.17.0
   - name: kubernetes-sigs/kustomize@kustomize/v4.5.7
-  - name: argoproj/argo-cd@v2.5.5
-  - name: helm/helm@v3.10.3
-  - name: grafana/loki/logcli@v2.7.1
   - name: kubernetes/kubectl@v1.26.0
-  - name: stedolan/jq@jq-1.6
-  - name: joshdk/retry@v1.4.0
+  - name: mikefarah/yq@v4.30.6
   - name: prometheus/promlens@v0.3.0
+  - name: stedolan/jq@jq-1.6
   - name: zoetrope/declarative-port-forwarder@v0.0.1
     registry: local

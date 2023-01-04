@@ -40,16 +40,16 @@ make launch-k8s
 
 ## アプリケーションのデプロイ
 
-アプリケーションをデプロイします。
+Argo CDをデプロイします。
 
 ```console
-make deploy-application
+make deploy-argocd
 ```
 
 ApplicationがすべてSyncedになるまで待ちます。
 
 ```console
-watch arogcd app list
+make sync-applications
 ```
 
 数分待つとアプリケーションのデプロイが完了します。
@@ -100,5 +100,4 @@ logcli query '{namespace="argocd"}'
 
 ```console
 make shutdown-k8s
-make stop-portforward
 ```
