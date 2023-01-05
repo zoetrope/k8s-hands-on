@@ -54,7 +54,11 @@ make sync-applications
 
 数分待つとアプリケーションのデプロイが完了します。
 
-## Grafanaの利用
+## メトリクスを見る方法
+
+メトリクスを閲覧するために以下の4つのツールが利用できます。
+
+### Grafana
 
 ブラウザを開いて http://localhost:33000 にアクセスしてください。
 
@@ -63,6 +67,22 @@ make sync-applications
 ```console
 make grafana-password
 ```
+
+### PromLens
+
+ブラウザを開いて http://localhost:9090 にアクセスしてください。
+
+### promql-cli
+
+以下のようにコマンドを実行すると、CLIから任意のクエリを実行することができます。
+
+```console
+promql 'sum(up) by (job)'
+```
+
+### Prometheus Web UI
+
+ブラウザを開いて http://localhost:38080 にアクセスしてください。
 
 ## Argo CDの利用
 
@@ -86,7 +106,21 @@ make login-argocd
 
 ログインに成功すると、`argocd app list`などのコマンドが実行できるようになります。
 
-## logcliの使い方
+## Lokiの利用
+
+### Grafanaでログを見る
+
+ブラウザを開いて http://localhost:33000 にアクセスしてください。
+
+下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
+
+```console
+make grafana-password
+```
+
+Explore画面を開き、データソースとして`Loki`を選択してください。
+
+### logcliの使い方
 
 以下のようにコマンドを実行すると、CLIからログを確認することができます。
 

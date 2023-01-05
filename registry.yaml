@@ -20,3 +20,13 @@ packages:
       pattern:
         checksum: "^(\\b[A-Fa-f0-9]{64}\\b)"
         file: "^\\b[A-Fa-f0-9]{64}\\b\\s+(\\S+)$"
+  - type: github_release
+    repo_owner: nalbury
+    repo_name: promql-cli
+    asset: promql-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz
+    description: Prometheus Query CLI
+    files:
+      - name: promql
+    supported_envs:
+      - linux
+      - darwin
