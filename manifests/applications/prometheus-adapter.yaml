@@ -13,7 +13,7 @@ spec:
       version: v3
       values: |
         prometheus:
-          url: http://vmsingle-database.monitoring-system.svc
+          url: http://vmsingle-database.victoriametrics.svc
           port: 8429
           path: "/"
         rules:

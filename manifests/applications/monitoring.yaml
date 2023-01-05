@@ -13,4 +13,4 @@ spec:
     path: manifests/monitoring
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring-system
+    namespace: victoriametrics

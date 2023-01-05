@@ -56,7 +56,7 @@ make sync-applications
 
 ## Grafanaの利用
 
-ブラウザを開いて http://localhost:3000 にアクセスしてください。
+ブラウザを開いて http://localhost:33000 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
 
@@ -68,7 +68,7 @@ make grafana-password
 
 ### Argo CDのWeb UIの利用
 
-ブラウザを開いて http://localhost:8000 にアクセスしてください。
+ブラウザを開いて http://localhost:30080 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Username: admin でログインします。
 

@@ -1,0 +1,44 @@
+## Application controller
+controller:
+  ## Application controller metrics configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor namespace
+      namespace: "prometheus" # "monitoring"
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
+
+## Server
+server:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor namespace
+      namespace: "prometheus"  # monitoring
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
+
+## Repo Server
+repoServer:
+  ## Repo server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor namespace
+      namespace: "prometheus" # "monitoring"
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus

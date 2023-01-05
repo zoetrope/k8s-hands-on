@@ -13,4 +13,4 @@ spec:
     path: manifests/sandbox
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: sandbox

@@ -4,5 +4,4 @@ namespace: sandbox
 resources:
   - namespace.yaml
   - dummy-metrics
-  - monitoring
   - todo
