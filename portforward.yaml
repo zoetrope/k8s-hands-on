@@ -13,7 +13,7 @@ targets:
     namespace: loki
     name: loki
     ports:
-      - "33100:3100"
+      - "3100:3100"
   - type: Service
     namespace: sandbox
     name: todo
@@ -29,3 +29,8 @@ targets:
     name: promlens
     ports:
       - "38080:8080"
+  - type: Service
+    namespace: prometheus
+    name: prometheus-kube-prometheus-prometheus
+    ports:
+      - "9090:9090"

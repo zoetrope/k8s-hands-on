@@ -20,3 +20,5 @@ packages:
   - name: stedolan/jq@jq-1.6
   - name: zoetrope/declarative-port-forwarder@v0.0.1
     registry: local
+  - name: nalbury/promql-cli@v0.3.0
+    registry: local
