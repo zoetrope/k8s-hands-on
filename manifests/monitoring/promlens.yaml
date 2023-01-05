@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promlens
+  labels:
+    app.kubernetes.io/name: promlens
+  namespace: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: promlens
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: promlens
+    spec:
+      containers:
+        - name: promlens
+          image: prom/promlens:v0.3.0
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+                GRAFANA_API_TOKEN=$(cat /token/GRAFANA_API_TOKEN) &&
+                promlens --grafana.url=http://prometheus-grafana --grafana.api-token=${GRAFANA_API_TOKEN}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /token
+              name: token
+      initContainers:
+        - name: init
+          image: quay.io/cybozu/ubuntu-debug:20.04
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+                GRAFANA_USER=$(cat /grafana-secret/admin-user) &&
+                GRAFANA_PASSWORD=$(cat /grafana-secret/admin-password) &&
+                TOKEN_ID=$(curl -sS http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@prometheus-grafana/api/auth/keys | jq '.[] | select(.name=="promlens_key") | .id') &&
+                if [ -n "${TOKEN_ID}" ]; then curl -sS -X DELETE http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@prometheus-grafana/api/auth/keys/${TOKEN_ID}; fi &&
+                curl -X POST -H "Content-Type: application/json" -d '{"name":"promlens_key", "role": "Admin"}' http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@prometheus-grafana/api/auth/keys | jq -r .key > /token/GRAFANA_API_TOKEN
+          volumeMounts:
+            - mountPath: /grafana-secret
+              name: grafana-secret
+            - mountPath: /token
+              name: token
+      volumes:
+        - name: token
+          emptyDir: {}
+        - name: grafana-secret
+          secret:
+            secretName: prometheus-grafana
