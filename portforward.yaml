@@ -24,3 +24,8 @@ targets:
     name: dummy-metrics
     ports:
       - "39000:8080"
+  - type: Deployment
+    namespace: prometheus
+    name: promlens
+    ports:
+      - "38080:8080"
