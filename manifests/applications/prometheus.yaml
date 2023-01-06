@@ -45,7 +45,7 @@ spec:
               editable: true
               jsonData:
                 tlsSkipVerify: true
-                timeInterval: "5s"
+                timeInterval: "30s"
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
