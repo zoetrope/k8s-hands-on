@@ -34,3 +34,8 @@ targets:
     name: prometheus-kube-prometheus-prometheus
     ports:
       - "9090:9090"
+  - type: Deployment
+    namespace: victoriametrics
+    name: vmsingle-database
+    ports:
+      - "38429:8429"
