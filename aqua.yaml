@@ -20,7 +20,7 @@ packages:
   - name: prometheus/prometheus@v2.41.0
   - name: prometheus/promlens@v0.3.0
   - name: stedolan/jq@jq-1.6
-  - name: zoetrope/declarative-port-forwarder@v0.0.1
+  - name: zoetrope/declarative-port-forwarder@v0.0.3
     registry: local
   - name: nalbury/promql-cli@v0.3.0
     registry: local
