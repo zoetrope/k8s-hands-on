@@ -77,7 +77,7 @@ login-argocd:
 .PHONY: portforward
 portforward:
 	mkdir -p /tmp/dpf
-	declarative-port-forwarder start --config ./portforward.yaml
+	declarative-port-forwarder start --manifest ./portforward.yaml
 
 .PHONY: stop-portforward
 stop-portforward:
