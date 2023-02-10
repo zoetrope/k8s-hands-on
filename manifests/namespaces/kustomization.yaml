@@ -4,6 +4,7 @@ resources:
   - argocd.yaml
   - cert-manager.yaml
   - loki.yaml
+  - phlare.yaml
   - prometheus-adapter.yaml
   - prometheus.yaml
   - tempo.yaml
