@@ -46,6 +46,13 @@ spec:
               jsonData:
                 tlsSkipVerify: true
                 timeInterval: "30s"
+            - name: Tempo
+              type: tempo
+              access: proxy
+              url: http://tempo.tempo.svc:3100
+              isDefault: false
+              version: 1
+              editable: true
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus

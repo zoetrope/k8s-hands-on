@@ -30,3 +30,13 @@ packages:
     supported_envs:
       - linux
       - darwin
+  - type: github_release
+    repo_owner: grafana
+    repo_name: tempo
+    asset: tempo_{{trimV .Version}}_{{.OS}}_{{.Arch}}.tar.gz
+    description: Tempo CLI
+    files:
+      - name: tempo-cli
+    supported_envs:
+      - linux
+      - darwin

@@ -6,4 +6,5 @@ resources:
   - loki.yaml
   - prometheus-adapter.yaml
   - prometheus.yaml
+  - tempo.yaml
   - victoriametrics.yaml

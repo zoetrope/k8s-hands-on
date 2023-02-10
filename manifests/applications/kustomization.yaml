@@ -9,4 +9,5 @@ resources:
   - prometheus-adapter.yaml
   - prometheus.yaml
   - sandbox.yaml
+  - tempo.yaml
   - victoriametrics.yaml
