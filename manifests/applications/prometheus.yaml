@@ -25,6 +25,16 @@ spec:
             - --metric-labels-allowlist
             - namespaces=[team]
         grafana:
+          env:
+            GF_FEATURE_TOGGLES_ENABLE: flameGraph
+            GF_AUTH_ANONYMOUS_ENABLED: "true"
+            GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+            GF_DIAGNOSTICS_PROFILING_ENABLED: "true"
+            GF_DIAGNOSTICS_PROFILING_ADDR: "0.0.0.0"
+            GF_DIAGNOSTICS_PROFILING_PORT: "6060"
+          podAnnotations:
+            phlare.grafana.com/scrape: "true"
+            phlare.grafana.com/port: "6060"
           additionalDataSources:
             - name: Loki
               type: loki
@@ -50,6 +60,13 @@ spec:
               type: tempo
               access: proxy
               url: http://tempo.tempo.svc:3100
+              isDefault: false
+              version: 1
+              editable: true
+            - name: Phlare
+              type: phlare
+              access: proxy
+              url: http://phlare.phlare.svc:4100
               isDefault: false
               version: 1
               editable: true

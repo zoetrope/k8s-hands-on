@@ -12,6 +12,10 @@ controller:
       # -- Prometheus ServiceMonitor labels
       additionalLabels:
         release: prometheus
+  # -- Annotations to be added to application controller pods
+  podAnnotations:
+    phlare.grafana.com/scrape: "true"
+    phlare.grafana.com/port: "8082"
 
 ## Server
 server:
