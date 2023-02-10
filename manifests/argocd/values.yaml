@@ -42,3 +42,12 @@ repoServer:
       # -- Prometheus ServiceMonitor labels
       additionalLabels:
         release: prometheus
+
+## Argo Configs
+configs:
+  # Argo CD configuration parameters
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
+  params:
+    ## Generic parameters
+    # -- Open-Telemetry collector address: (e.g. "otel-collector:4317")
+    otlp.address: 'tempo.tempo.svc:4317'

@@ -9,12 +9,30 @@ nodes:
           local:
             extraArgs:
               listen-metrics-urls: http://0.0.0.0:2381
+              experimental-enable-distributed-tracing: "true"
+              experimental-distributed-tracing-address: 10.96.0.2:4317
+              experimental-distributed-tracing-service-name: etcd
         scheduler:
           extraArgs:
             bind-address: 0.0.0.0
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
+        apiServer:
+          extraArgs:
+            tracing-config-file: /etc/cluster/tracing-config.yaml
+          extraVolumes:
+            - name: cluster
+              hostPath: /etc/cluster
+              mountPath: /etc/cluster
+              readOnly: true
+              pathType: "DirectoryOrCreate"
+    extraMounts:
+      - hostPath: ./cluster
+        containerPath: /etc/cluster
+        readOnly: true
   - role: worker
   - role: worker
   - role: worker
+featureGates:
+  APIServerTracing: true
