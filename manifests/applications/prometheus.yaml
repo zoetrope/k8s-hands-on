@@ -70,6 +70,27 @@ spec:
               isDefault: false
               version: 1
               editable: true
+          dashboards:
+            default:
+              argocd:
+                url: https://raw.githubusercontent.com/argoproj/argo-cd/master/examples/dashboard.json
+          dashboardProviders:
+            dashboardproviders.yaml:
+              apiVersion: 1
+              providers:
+              - name: 'default'
+                orgId: 1
+                folder: ''
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/default
+          sidecar:
+            dashboards:
+              enabled: true
+              provider:
+                foldersFromFilesStructure: true
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
