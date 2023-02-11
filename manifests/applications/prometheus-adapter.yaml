@@ -13,9 +13,9 @@ spec:
       version: v3
       values: |
         prometheus:
-          url: http://vmsingle-database.victoriametrics.svc
-          port: 8429
-          path: "/"
+          url: http://prometheus-kube-prometheus-prometheus.prometheus.svc
+          port: 9090
+          path: ""
         rules:
           default: true
           custom: []
