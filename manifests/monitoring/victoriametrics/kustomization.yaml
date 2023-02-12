@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: victoriametrics
 resources:
-  - prometheus
-  - promlens.yaml
-  - victoriametrics
+  - vmagent.yaml
+  - vmsingle.yaml
