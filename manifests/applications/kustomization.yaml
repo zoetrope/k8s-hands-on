@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: argocd
 resources:
   - cert-manager.yaml
+  - kubbernecker.yaml
   - loki.yaml
   - monitoring.yaml
   - namespaces.yaml

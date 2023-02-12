@@ -35,3 +35,22 @@ spec:
     - port: http
       scheme: http
       path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kubbernecker
+  namespace: prometheus
+  labels:
+    release: prometheus
+spec:
+  namespaceSelector:
+    matchNames:
+      - kubbernecker
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubbernecker
+  podMetricsEndpoints:
+    - port: metrics
+      scheme: http
+      path: /metrics

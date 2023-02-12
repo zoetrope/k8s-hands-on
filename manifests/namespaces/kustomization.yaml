@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - argocd.yaml
   - cert-manager.yaml
+  - kubbernecker.yaml
   - loki.yaml
   - phlare.yaml
   - prometheus-adapter.yaml
