@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: add-todo-hook
+  namespace: sandbox
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: ubuntu
+        image: quay.io/cybozu/ubuntu-debug:20.04
+        command:
+          - "curl"
+          - "-X"
+          - "POST"
+          - "-d"
+          - "{\"name\": \"test\"}"
+          - "http://todo/api/v1/todo"
+      restartPolicy: Never
+  backoffLimit: 2

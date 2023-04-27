@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - dummy-metrics
   - todo
+  - job.yaml
