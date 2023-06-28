@@ -27,6 +27,7 @@
 以下のコマンドでCLIツールのセットアップをおこなってください。
 
 ```console
+aqua policy allow aqua-policy.yaml
 aqua i -l
 ```
 
