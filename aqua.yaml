@@ -9,7 +9,7 @@ registries:
     path: registry.yaml
 packages:
   - name: argoproj/argo-cd@v2.7.8
-  - name: grafana/loki/logcli@v2.8.2
+  - name: grafana/loki/logcli@v2.8.3
   - name: helm/helm@v3.12.2
   - name: joshdk/retry@v1.4.0
   - name: kubernetes-sigs/kind@v0.19.0
