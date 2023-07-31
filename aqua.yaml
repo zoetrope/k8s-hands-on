@@ -13,7 +13,7 @@ packages:
   - name: helm/helm@v3.12.2
   - name: joshdk/retry@v1.4.0
   - name: kubernetes-sigs/kind@v0.19.0
-  - name: kubernetes-sigs/kustomize@kustomize/v5.1.0
+  - name: kubernetes-sigs/kustomize@kustomize/v5.1.1
   - name: kubernetes/kubectl@v1.27.4
   - name: mikefarah/yq@v4.34.2
   - name: prometheus/alertmanager@v0.25.0
