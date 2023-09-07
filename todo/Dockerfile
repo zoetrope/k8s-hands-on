@@ -1,4 +1,4 @@
-FROM quay.io/cybozu/golang:1.20-focal AS build-server
+FROM quay.io/cybozu/golang:1.21-focal AS build-server
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
