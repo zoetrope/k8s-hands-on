@@ -16,6 +16,6 @@
     "autoprefixer": "10.4.16",
     "parcel": "2.11.0",
     "postcss": "8.4.33",
-    "postcss-import": "15.1.0"
+    "postcss-import": "16.0.0"
   }
 }
