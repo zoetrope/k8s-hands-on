@@ -10,7 +10,7 @@ registries:
 packages:
   - name: argoproj/argo-cd@v2.10.1
   - name: grafana/loki/logcli@v2.9.4
-  - name: helm/helm@v3.14.0
+  - name: helm/helm@v3.14.1
   - name: joshdk/retry@v1.4.0
   - name: kubernetes-sigs/kind@v0.21.0
   - name: kubernetes-sigs/kustomize@kustomize/v5.3.0
