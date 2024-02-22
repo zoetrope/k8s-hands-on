@@ -17,7 +17,7 @@ packages:
   - name: kubernetes/kubectl@v1.29.2
   - name: mikefarah/yq@v4.41.1
   - name: prometheus/alertmanager@v0.26.0
-  - name: prometheus/prometheus@v2.49.1
+  - name: prometheus/prometheus@v2.50.0
   - name: prometheus/promlens@v0.3.0
   - name: stedolan/jq@jq-1.6
   - name: zoetrope/declarative-port-forwarder@v0.0.3
