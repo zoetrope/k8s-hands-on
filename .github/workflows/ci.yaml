@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
 env:
-  go-version: 1.19
+  go-version: 1.22
 jobs:
   sync:
     name: Sync all applications
@@ -18,7 +18,8 @@ jobs:
       - run: go install github.com/yusukebe/t/cmd/t@latest
       - uses: aquaproj/aqua-installer@v2.3.0
         with:
-          aqua_version: v1.38.0
+          aqua_version: v2.25.0
+          policy_allow: "true"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make launch-k8s
