@@ -19,10 +19,10 @@ packages:
   - name: prometheus/alertmanager@v0.27.0
   - name: prometheus/prometheus@v2.51.0
   - name: prometheus/promlens@v0.3.0
-  - name: stedolan/jq@jq-1.6
+  - name: stedolan/jq@jq-1.7.1
   - name: zoetrope/declarative-port-forwarder@v0.0.3
     registry: local
   - name: nalbury/promql-cli@v0.3.0
     registry: local
-  - name: grafana/tempo@v2.4.0
+  - name: grafana/tempo@v2.4.1
     registry: local
