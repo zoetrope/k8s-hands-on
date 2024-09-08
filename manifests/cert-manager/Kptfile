@@ -1,0 +1,27 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: cert-manager
+  annotations:
+    argocd.argoproj.io/hook: Skip
+    config.kubernetes.io/local-config: "true"
+upstream:
+  type: git
+  git:
+    repo: https://github.com/zoetrope/k8s-hands-on
+    directory: /packages/cert-manager
+    ref: v1
+  updateStrategy: resource-merge
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/zoetrope/k8s-hands-on
+    directory: /packages/cert-manager
+    ref: packages/cert-manager/v1
+    commit: c8cbb848855f8e7f962ab21e4876336f90c1512f
+info:
+  description: Package of cert-manager manifests
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/render-helm-chart:v0.2.2
+      configPath: cert-manager-chart.yaml
