@@ -1,17 +1,18 @@
 apiVersion: fn.kpt.dev/v1alpha1
 kind: RenderHelmChart
 metadata:
-  name: render-chart
+  name: cert-manager
   annotations:
     config.kubernetes.io/local-config: "true"
+    argocd.argoproj.io/hook: Skip
 helmCharts:
 - chartArgs:
     name: cert-manager
     version: v1.15.3
     repo: https://charts.jetstack.io
   templateOptions:
-    releaseName: cert-managerrel
-    namespace: cert-managerns
+    releaseName: cert-managerr
+    namespace: cert-manager
     values:
       valuesInline:
         crds:
