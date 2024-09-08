@@ -1,0 +1,11 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: cert-manager
+  annotations:
+    config.kubernetes.io/local-config: "true"
+info:
+  description: Package of cert-manager manifests
+pipeline:
+  mutators:
+  - image: gcr.io/kpt-fn/remove-local-config-resources:v0.1.0
