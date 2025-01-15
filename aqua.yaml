@@ -16,7 +16,7 @@ packages:
   - name: kubernetes-sigs/kustomize@kustomize/v5.6.0
   - name: kubernetes/kubectl@v1.32.0
   - name: mikefarah/yq@v4.45.1
-  - name: prometheus/alertmanager@v0.27.0
+  - name: prometheus/alertmanager@v0.28.0
   - name: prometheus/prometheus@v3.1.0
   - name: prometheus/promlens@v0.3.0
   - name: stedolan/jq@jq-1.7.1
