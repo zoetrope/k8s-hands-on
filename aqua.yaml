@@ -14,7 +14,7 @@ packages:
   - name: joshdk/retry@v1.4.0
   - name: kubernetes-sigs/kind@v0.26.0
   - name: kubernetes-sigs/kustomize@kustomize/v5.6.0
-  - name: kubernetes/kubectl@v1.32.1
+  - name: kubernetes/kubectl@v1.32.2
   - name: mikefarah/yq@v4.45.1
   - name: prometheus/alertmanager@v0.28.0
   - name: prometheus/prometheus@v3.1.0
