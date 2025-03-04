@@ -7,7 +7,7 @@ toolchain go1.24.0
 require (
 	github.com/cybozu-go/log v1.7.0
 	github.com/cybozu-go/well v1.11.2
-	github.com/prometheus/client_golang v1.21.0
+	github.com/prometheus/client_golang v1.21.1
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.19.0
 )
