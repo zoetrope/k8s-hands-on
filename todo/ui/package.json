@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "alpinejs": "3.14.9",
-    "tailwindcss": "4.1.7"
+    "tailwindcss": "4.1.8"
   },
   "devDependencies": {
     "autoprefixer": "10.4.21",
