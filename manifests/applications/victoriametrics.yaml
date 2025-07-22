@@ -19,3 +19,19 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: victoriametrics
+  # https://docs.victoriametrics.com/helm/victoriametrics-operator/#argocd-issues
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: victoriametrics-victoria-metrics-operator-validation
+      namespace: victoriametrics
+      jsonPointers:
+        - /data
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: victoriametrics-victoria-metrics-operator-admission
+      jqPathExpressions:
+      - '.webhooks[]?.clientConfig.caBundle'

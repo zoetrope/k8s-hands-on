@@ -1,5 +1,3 @@
-KUBERNETES_VERSION := 1.29.2
-
 KIND_CLUSTER_NAME=hands-on
 
 all: help
@@ -7,17 +5,15 @@ all: help
 .PHONY: launch-k8s
 launch-k8s: ## Launch Kubernetes cluster with kind
 	if [ ! "$(shell kind get clusters | grep $(KIND_CLUSTER_NAME))" ]; then \
-		kind create cluster --name=$(KIND_CLUSTER_NAME) --config kind-config.yaml --image kindest/node:v$(KUBERNETES_VERSION) --wait 180s; \
+		kind create cluster --name=$(KIND_CLUSTER_NAME) --config kind-config.yaml --wait 180s; \
 		kubectl wait pod --all -n kube-system --for condition=Ready --timeout 180s; \
 	fi
-	$(MAKE) portforward
 
 .PHONY: shutdown-k8s
 shutdown-k8s: ## Shutdown Kubernetes cluster
 	if [ "$(shell kind get clusters | grep $(KIND_CLUSTER_NAME))" ]; then \
 		kind delete cluster --name=$(KIND_CLUSTER_NAME) || true; \
 	fi
-	$(MAKE) stop-portforward
 
 .PHONY: deploy-argocd
 deploy-argocd: ## Deploy Argo CD on Kubernetes cluster
@@ -33,8 +29,8 @@ sync-applications: ## Sync Applications
 	# sort applications by sync-wave annotation
 	$(eval APPS := $(shell kustomize build ./manifests/applications/ | yq ea [.] -o json | jq -r '. | sort_by(.metadata.annotations."argocd.argoproj.io/sync-wave" // "0" | tonumber) | .[] | .metadata.name'))
 	for app in $(APPS); do \
-		argocd app sync $$app --retry-limit 3 --timeout 300; \
-		argocd app wait $$app --timeout 300; \
+		argocd app sync --port-forward --port-forward-namespace argocd $$app --retry-limit 3 --timeout 300; \
+		argocd app wait --port-forward --port-forward-namespace argocd $$app --timeout 300; \
 	done
 	# enable Argo CD metrics Service and ServiceMonitor
 	helm upgrade -f ./manifests/argocd/values.yaml --namespace argocd argocd argo/argo-cd
@@ -45,11 +41,11 @@ local-sync-applications: ## Sync Applications with local manifests
 	$(eval APPS := $(shell kustomize build ./manifests/applications/ | yq ea [.] -o json | jq -r '. | sort_by(.metadata.annotations."argocd.argoproj.io/sync-wave" // "0" | tonumber) | .[] | .metadata.name'))
 	for app in $(APPS); do \
 		if [ $$app = "namespaces" ] || [ $$app = "monitoring" ] || [ $$app = "sandbox" ]; then \
-			argocd app sync $$app --local=./manifests/$$app --retry-limit 3 --timeout 300; \
+			argocd app sync --port-forward --port-forward-namespace argocd $$app --local=./manifests/$$app --retry-limit 3 --timeout 300; \
 		else \
-			argocd app sync $$app --retry-limit 3 --timeout 300; \
+			argocd app sync --port-forward --port-forward-namespace argocd $$app --retry-limit 3 --timeout 300; \
 		fi; \
-		argocd app wait $$app --timeout 300; \
+		argocd app wait --port-forward --port-forward-namespace argocd $$app --timeout 300; \
 	done
 	# enable Argo CD metrics Service and ServiceMonitor
 	helm upgrade -f ./manifests/argocd/values.yaml --namespace argocd argocd argo/argo-cd
@@ -72,16 +68,7 @@ grafana-password: ## Show admin password for Grafana
 
 .PHONY: login-argocd
 login-argocd:
-	argocd login localhost:30080 --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-
-.PHONY: portforward
-portforward:
-	mkdir -p /tmp/dpf
-	declarative-port-forwarder start --manifest ./portforward.yaml
-
-.PHONY: stop-portforward
-stop-portforward:
-	declarative-port-forwarder stop
+	argocd login --port-forward --port-forward-namespace argocd --insecure --username admin --password $$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 .PHONY: help
 help: ## Display this help.

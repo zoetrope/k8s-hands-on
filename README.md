@@ -61,6 +61,12 @@ make sync-applications
 
 ### Grafana
 
+GrafanaをPort Forwardします。
+
+```console
+kubectl port-forward -n prometheus svc/prometheus-grafana 33000:80
+```
+
 ブラウザを開いて http://localhost:33000 にアクセスしてください。
 
 下記のコマンドでパスワードを確認し、Grafanaの左下のメニューからSign Inをクリックし、Username: admin でログインします。
@@ -69,7 +75,13 @@ make sync-applications
 make grafana-password
 ```
 
-### PromLens
+### Prometheus Web UI
+
+PrometheusをPort Forwardします。
+
+```console
+kubectl port-forward -n prometheus svc/prometheus-kube-prometheus-prometheus 9090:9090
+```
 
 ブラウザを開いて http://localhost:9090 にアクセスしてください。
 
@@ -81,13 +93,25 @@ make grafana-password
 promql 'sum(up) by (job)'
 ```
 
-### Prometheus Web UI
+### PromLens
+
+PromLensをPort Forwardします。
+
+```console
+kubectl port-forward -n prometheus deployment/promlens 38080:8080
+```
 
 ブラウザを開いて http://localhost:38080 にアクセスしてください。
 
 ## Argo CDの利用
 
 ### Argo CDのWeb UIの利用
+
+Argo CDをPort Forwardします。
+
+```console
+kubectl port-forward -n argocd deployment/argocd-server 30080:8080
+```
 
 ブラウザを開いて http://localhost:30080 にアクセスしてください。
 
@@ -106,6 +130,10 @@ make login-argocd
 ```
 
 ログインに成功すると、`argocd app list`などのコマンドが実行できるようになります。
+
+```console
+argocd --port-forward --port-forward-namespace argocd app list
+```
 
 ## Lokiの利用
 

@@ -34,7 +34,7 @@ spec:
               name: token
       initContainers:
         - name: init
-          image: quay.io/cybozu/ubuntu-debug:20.04
+          image: ghcr.io/cybozu/ubuntu-debug:24.04
           command: ["/bin/sh"]
           args:
             - -c

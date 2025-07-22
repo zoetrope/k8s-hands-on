@@ -14,6 +14,11 @@ spec:
     helm:
       version: v3
       values: |
+        prometheus:
+          prometheusSpec:
+            additionalArgs:
+              - name: enable-feature
+                value: native-histograms
         prometheusOperator:
           admissionWebhooks:
             patch:
