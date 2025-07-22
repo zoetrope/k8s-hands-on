@@ -29,9 +29,20 @@ var (
 	duration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Namespace: namespace,
-			Name:      "request_duration_seconds",
+			Name:      "classic_request_duration_seconds",
 			Help:      "A histogram of latencies for requests.",
 			Buckets:   []float64{.25, .5, 1, 2.5, 5, 10},
+		},
+		[]string{"handler", "method"},
+	)
+
+	nativeDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Namespace:                      namespace,
+			Name:                           "native_request_duration_seconds",
+			Help:                           "A native histogram of latencies for requests.",
+			NativeHistogramBucketFactor:    1.1,
+			NativeHistogramMaxBucketNumber: 30,
 		},
 		[]string{"handler", "method"},
 	)
@@ -48,14 +59,16 @@ var (
 )
 
 func init() {
-	prometheus.MustRegister(inFlightGauge, counter, duration, responseSize)
+	prometheus.MustRegister(inFlightGauge, counter, duration, nativeDuration, responseSize)
 }
 
 func WithInstruments(name string, handler http.HandlerFunc) http.Handler {
 	return promhttp.InstrumentHandlerInFlight(inFlightGauge,
 		promhttp.InstrumentHandlerDuration(duration.MustCurryWith(prometheus.Labels{"handler": name}),
-			promhttp.InstrumentHandlerCounter(counter,
-				promhttp.InstrumentHandlerResponseSize(responseSize, handler),
+			promhttp.InstrumentHandlerDuration(nativeDuration.MustCurryWith(prometheus.Labels{"handler": name}),
+				promhttp.InstrumentHandlerCounter(counter,
+					promhttp.InstrumentHandlerResponseSize(responseSize, handler),
+				),
 			),
 		),
 	)

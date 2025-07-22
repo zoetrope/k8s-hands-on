@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
     - name: request
-      image: quay.io/cybozu/ubuntu-debug:20.04
+      image: ghcr.io/cybozu/ubuntu-debug:24.04
       command: [ "/bin/bash" ]
       args: ["-c", "while true; do curl -s http://todo/test; sleep 1; done"]

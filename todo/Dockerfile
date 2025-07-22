@@ -1,4 +1,4 @@
-FROM quay.io/cybozu/golang:1.21-focal AS build-server
+FROM ghcr.io/cybozu/golang:1.24-noble AS build-server
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
@@ -23,9 +23,9 @@ RUN cd ui && npm ci
 COPY ui/ ui/
 RUN cd ui && npm run build
 
-FROM quay.io/cybozu/ubuntu:24.04 AS runtime
+FROM ghcr.io/cybozu/ubuntu:24.04 AS runtime
 
-LABEL org.opencontainers.image.source https://github.com/zoetrope/k8s-hands-on
+LABEL org.opencontainers.image.source=https://github.com/zoetrope/k8s-hands-on
 
 WORKDIR /
 

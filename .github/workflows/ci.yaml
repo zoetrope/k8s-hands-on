@@ -43,3 +43,10 @@ jobs:
             echo $item | jq -r .status.health.status | t Healthy
             echo $item | jq -r .status.sync.status | t Synced
           done
+      - name: show application status
+        if: failure()
+        run: |
+          argocd app list --port-forward --port-forward-namespace argocd
+          IFS=$'\n'; for item in $(kubectl get app -n argocd -o json | jq -r '.items[].metadata.name'); do
+            argocd app get --port-forward --port-forward-namespace argocd $item
+          done
