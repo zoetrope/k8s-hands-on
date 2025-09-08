@@ -1,4 +1,4 @@
-FROM ghcr.io/cybozu/golang:1.24-noble AS build-server
+FROM ghcr.io/cybozu/golang:1.25-noble AS build-server
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /work
