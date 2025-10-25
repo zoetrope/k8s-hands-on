@@ -10,10 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "alpinejs": "3.15.0",
-    "tailwindcss": "4.1.14"
+    "tailwindcss": "4.1.16"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.1.14",
+    "@tailwindcss/postcss": "4.1.16",
     "parcel": "2.16.0",
     "postcss": "8.5.6",
     "postcss-import": "16.1.1"
