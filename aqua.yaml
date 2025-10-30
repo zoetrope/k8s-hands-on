@@ -17,7 +17,7 @@ packages:
   - name: kubernetes/kubectl@v1.34.1
   - name: mikefarah/yq@v4.48.1
   - name: prometheus/alertmanager@v0.28.1
-  - name: prometheus/prometheus@v3.7.2
+  - name: prometheus/prometheus@v3.7.3
   - name: prometheus/promlens@v0.3.0
   - name: stedolan/jq@jq-1.7.1
   - name: nalbury/promql-cli@v0.3.0
