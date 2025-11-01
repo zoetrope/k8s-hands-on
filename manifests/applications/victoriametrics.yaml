@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://victoriametrics.github.io/helm-charts/
     chart: victoria-metrics-operator
-    targetRevision: 0.55.3
+    targetRevision: 0.56.0
     helm:
       version: v3
       parameters:
