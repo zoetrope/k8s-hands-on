@@ -8,7 +8,7 @@ registries:
     type: local
     path: registry.yaml
 packages:
-  - name: argoproj/argo-cd@v3.2.2
+  - name: argoproj/argo-cd@v3.2.3
   - name: grafana/loki/logcli@v3.6.3
   - name: helm/helm@v4.0.4
   - name: joshdk/retry@v1.4.0
