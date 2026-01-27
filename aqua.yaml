@@ -22,6 +22,6 @@ packages:
   - name: stedolan/jq@jq-1.7.1
   - name: nalbury/promql-cli@v0.3.0
     registry: local
-  - name: grafana/tempo@v2.9.1
+  - name: grafana/tempo@v2.10.0
     registry: local
   - name: kptdev/kpt@v1.0.0-beta.55
