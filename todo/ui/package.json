@@ -9,7 +9,7 @@
   "author": "zoetrope",
   "license": "MIT",
   "dependencies": {
-    "alpinejs": "3.15.4",
+    "alpinejs": "3.15.5",
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
