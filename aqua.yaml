@@ -12,7 +12,7 @@ packages:
   - name: grafana/loki/logcli@v3.7.3
   - name: helm/helm@v4.2.3
   - name: joshdk/retry@v1.4.0
-  - name: kubernetes-sigs/kind@v0.31.0
+  - name: kubernetes-sigs/kind@v0.32.0
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
   - name: kubernetes/kubectl@v1.36.2
   - name: mikefarah/yq@v4.53.3
