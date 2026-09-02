@@ -2,7 +2,7 @@ module github.com/zoetrope/k8s-hands-on/todo
 
 go 1.25.0
 
-toolchain go1.26.5
+toolchain go1.27.1
 
 require (
 	github.com/cybozu-go/log v1.7.0
